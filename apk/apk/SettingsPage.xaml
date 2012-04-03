@@ -1,0 +1,19 @@
+﻿<Page x:Class="apk.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Height="700" Width="1080" Title="SettingsPage" Loaded="Page_Loaded"
+        xmlns:my="clr-namespace:Microsoft.Samples.Kinect.WpfViewers;assembly=Microsoft.Samples.Kinect.WpfViewers">
+
+    <Canvas>
+        <my:KinectColorViewer Canvas.Left="632" Canvas.Top="28" Width="400" Height="300" Name="kinectColorViewer1" Kinect="{Binding ElementName=kinectSensorChooser1, Path=Kinect}" />
+        <my:KinectSensorChooser Canvas.Left="0" Canvas.Top="1000" Name="kinectSensorChooser1" Width="328" />
+        <Button Canvas.Left="12" Canvas.Top="28" Content="Set Range of Motion" Height="150" Name="button1" Width="350" FontSize="32" FontWeight="Normal" FontFamily="Segoe UI" />
+        <Button Canvas.Left="12" Canvas.Top="198" Content="Manage Taboo Words" Height="150" Name="button2" Width="350" FontSize="32" />
+        <Button Canvas.Left="12" Canvas.Top="368" Content="Manage Taboo Gestures" Height="150" Name="button3" Width="350" FontSize="32" />
+        <Button Canvas.Left="12" Canvas.Top="538" Content="Return Home" Height="150" Name="button4" Width="350" FontSize="32" />
+        <Button Canvas.Left="632" Canvas.Top="355" Content="Set Volume Level" FontSize="32" Height="150" Name="button5" Width="400" />
+        <Button Canvas.Left="632" Canvas.Top="561" Content="During My Presentation" Height="120" Name="button6" Width="198" FontSize="18"/>
+        <Button Canvas.Left="834" Canvas.Top="561" Content="After I'm Done" Height="120" Name="button7" Width="198" FontSize="18"/>
+        <Label Canvas.Left="632" Canvas.Top="513" Content="When to Display Speech Results:" Height="42" Name="label1" Width="400" FontSize="22"/>
+    </Canvas>
+</Page>
