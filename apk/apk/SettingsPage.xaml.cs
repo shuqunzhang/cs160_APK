@@ -22,6 +22,11 @@ namespace apk
     /// </summary>
     public partial class SettingsPage : Page
     {
+        private void button4_Click(object sender, RoutedEventArgs e)
+        {
+            HomePage homePage = new HomePage();
+            this.NavigationService.Navigate(homePage);
+        }
 
         public SettingsPage()
         {

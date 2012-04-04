@@ -11,5 +11,8 @@
         <Button Canvas.Left="12" Canvas.Top="236" Content="Review Presentation" Height="172" Name="button2" Width="403" FontSize="32" />
         <Button Canvas.Left="12" Canvas.Top="444" Content="Change Settings" Height="172" Name="button3" Width="403" FontSize="32" Click="button3_Click" />
         <Button Canvas.Left="629" Canvas.Top="444" Content="Close Application" Height="172" Name="button4" Width="403" FontSize="32" Click="button4_Click" />
+        <Ellipse Canvas.Right="0" Canvas.Bottom="0" Fill="#FF2CACE3" Height="30" Name="cursor" Width="30" Opacity="0.75" Stroke="White" />
+        <Label Canvas.Left="0" Canvas.Top="622" Content="Label" Height="78" Name="debug" Width="1080" FontSize="48" />
+        <Ellipse Canvas.Right="0" Canvas.Bottom="0" Fill="#FFFFFF" Height="30" Name="nothing" Width="30" Opacity="0" />
     </Canvas>
 </Page>
