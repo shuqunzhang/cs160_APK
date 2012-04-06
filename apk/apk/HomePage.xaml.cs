@@ -93,7 +93,7 @@ namespace apk
                 Application curApp = Application.Current;
                 curApp.Shutdown();
             }
-            else if (b == button2) 
+            else if (b == button1) 
             {
                 PresentationPage presentation = new PresentationPage(kinectSensorChooser1);
                 this.NavigationService.Navigate(presentation);
