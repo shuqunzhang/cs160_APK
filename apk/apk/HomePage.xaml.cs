@@ -84,13 +84,19 @@ namespace apk
         {
             if (b == button3)
             {
-                SettingsPage settings = new SettingsPage();
+                //SettingsPage settings = new SettingsPage();
+                SettingsPage settings = new SettingsPage(kinectSensorChooser1);
                 this.NavigationService.Navigate(settings);
             }
             else if (b == button4)
             {
                 Application curApp = Application.Current;
                 curApp.Shutdown();
+            }
+            else if (b == button1) 
+            {
+                PresentationPage presentation = new PresentationPage(kinectSensorChooser1);
+                this.NavigationService.Navigate(presentation);
             }
 
         }

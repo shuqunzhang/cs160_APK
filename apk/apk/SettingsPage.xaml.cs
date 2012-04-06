@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Kinect;
+using Microsoft.Samples.Kinect.WpfViewers;
 using Coding4Fun.Kinect.Wpf;
 using System.Windows.Threading;
 
@@ -33,6 +34,12 @@ namespace apk
             InitializeComponent();
         }
 
+        public SettingsPage(KinectSensorChooser ksc) 
+        {
+            InitializeComponent();
+            kinectSensorChooser1 = ksc;
+        }
+
         #region SampleCode
         bool closing = false;
         const int skeletonCount = 6;
@@ -40,51 +47,52 @@ namespace apk
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            kinectSensorChooser1.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser1_KinectSensorChanged);
-
+            //kinectSensorChooser1.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser1_KinectSensorChanged);
+            kinectSensorChooser1.Kinect.AllFramesReady += new EventHandler<AllFramesReadyEventArgs>(sensor_AllFramesReady);
         }
 
-        void kinectSensorChooser1_KinectSensorChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            KinectSensor old = (KinectSensor)e.OldValue;
 
-            StopKinect(old);
+        //void kinectSensorChooser1_KinectSensorChanged(object sender, DependencyPropertyChangedEventArgs e)
+        //{
+        //    KinectSensor old = (KinectSensor)e.OldValue;
 
-            KinectSensor sensor = (KinectSensor)e.NewValue;
+        //    StopKinect(old);
 
-            if (sensor == null)
-            {
-                return;
-            }
+        //    KinectSensor sensor = (KinectSensor)e.NewValue;
+
+        //    if (sensor == null)
+        //    {
+        //        return;
+        //    }
 
 
 
 
-            var parameters = new TransformSmoothParameters
-            {
-                Smoothing = 0.3f,
-                Correction = 0.0f,
-                Prediction = 0.0f,
-                JitterRadius = 1.0f,
-                MaxDeviationRadius = 0.5f
-            };
-            sensor.SkeletonStream.Enable(parameters);
+        //    var parameters = new TransformSmoothParameters
+        //    {
+        //        Smoothing = 0.3f,
+        //        Correction = 0.0f,
+        //        Prediction = 0.0f,
+        //        JitterRadius = 1.0f,
+        //        MaxDeviationRadius = 0.5f
+        //    };
+        //    sensor.SkeletonStream.Enable(parameters);
 
-            sensor.SkeletonStream.Enable();
+        //    sensor.SkeletonStream.Enable();
 
-            sensor.AllFramesReady += new EventHandler<AllFramesReadyEventArgs>(sensor_AllFramesReady);
-            sensor.DepthStream.Enable(DepthImageFormat.Resolution640x480Fps30);
-            sensor.ColorStream.Enable(ColorImageFormat.RgbResolution640x480Fps30);
+        //    sensor.AllFramesReady += new EventHandler<AllFramesReadyEventArgs>(sensor_AllFramesReady);
+        //    sensor.DepthStream.Enable(DepthImageFormat.Resolution640x480Fps30);
+        //    sensor.ColorStream.Enable(ColorImageFormat.RgbResolution640x480Fps30);
 
-            try
-            {
-                sensor.Start();
-            }
-            catch (System.IO.IOException)
-            {
-                kinectSensorChooser1.AppConflictOccurred();
-            }
-        }
+        //    try
+        //    {
+        //        sensor.Start();
+        //    }
+        //    catch (System.IO.IOException)
+        //    {
+        //        kinectSensorChooser1.AppConflictOccurred();
+        //    }
+        //}
 
         void sensor_AllFramesReady(object sender, AllFramesReadyEventArgs e)
         {
@@ -100,8 +108,6 @@ namespace apk
             {
                 return;
             }
-
-
 
             //set scaled position
             //ScalePosition(headImage, first.Joints[JointType.Head]);
