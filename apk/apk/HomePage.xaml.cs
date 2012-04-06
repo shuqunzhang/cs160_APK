@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Kinect;
 using Coding4Fun.Kinect.Wpf;
+using Microsoft.Samples.Kinect.WpfViewers;
 using System.Windows.Threading;
 
 namespace apk
@@ -74,7 +75,7 @@ namespace apk
         }
         private Button select_button(SkeletonPoint dip)
         {
-            if (on_button(button1,dip)) return button1;
+            if (on_button(button1, dip)) return button1;
             if (on_button(button2, dip)) return button2;
             if (on_button(button3, dip)) return button3;
             if (on_button(button4, dip)) return button4;
@@ -84,7 +85,6 @@ namespace apk
         {
             if (b == button3)
             {
-                //SettingsPage settings = new SettingsPage();
                 SettingsPage settings = new SettingsPage(kinectSensorChooser1);
                 this.NavigationService.Navigate(settings);
             }
@@ -93,7 +93,7 @@ namespace apk
                 Application curApp = Application.Current;
                 curApp.Shutdown();
             }
-            else if (b == button1) 
+            else if (b == button2) 
             {
                 PresentationPage presentation = new PresentationPage(kinectSensorChooser1);
                 this.NavigationService.Navigate(presentation);
@@ -136,7 +136,6 @@ namespace apk
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             kinectSensorChooser1.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser1_KinectSensorChanged);
-
         }
 
         void kinectSensorChooser1_KinectSensorChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -204,7 +203,7 @@ namespace apk
             //currentPos will be set in GetCameraPoint / ScalePosition
 
             TimeSpan timeDifference = DateTime.Now - lastKeyTime;
-            
+
             //not important, I just didn't want to keep typing JointType.blah over and over
             JointType right = JointType.HandRight;
             JointType left = JointType.HandLeft;
@@ -217,13 +216,14 @@ namespace apk
             button2.Tag = "";
             button3.Tag = "";
             button4.Tag = "";
-            if (on_button(button4,currentPos[right]))
+            if (on_button(button4, currentPos[right]))
             { //hovering button4
-                    button4.Tag = "hover";
+                button4.Tag = "hover";
             }
 
             bool resetTrack = true;
-            switch(currentTrack){
+            switch (currentTrack)
+            {
                 case Gesture.none:
                     resetTrack = false;
                     if (is_push(left))
@@ -235,7 +235,8 @@ namespace apk
                     break;
 
                 case Gesture.left_push:
-                    if (is_push(left)){
+                    if (is_push(left))
+                    {
                         resetTrack = false;
                         if (lastKeyPos[left].Z - currentPos[left].Z > 0.15)
                         {
@@ -250,7 +251,8 @@ namespace apk
                     }
                     break;
             }
-            if (resetTrack){
+            if (resetTrack)
+            {
                 currentTrack = Gesture.none;
                 lastKeyTime = DateTime.Now;
             }
@@ -340,6 +342,28 @@ namespace apk
             }
         }
 
+        public void StopKinectHack()
+        {
+            KinectSensor sensor = kinectSensorChooser1.Kinect;
+            if (sensor != null)
+            {
+                if (sensor.IsRunning)
+                {
+                    //stop sensor 
+                    sensor.Stop();
+
+                    //stop audio if not null
+                    if (sensor.AudioSource != null)
+                    {
+                        sensor.AudioSource.Stop();
+                    }
+
+
+                }
+            }
+        }
+
+
         private void CameraPosition(FrameworkElement element, ColorImagePoint point)
         {
             //Divide by 2 for width and height so point is right in the middle 
@@ -364,11 +388,11 @@ namespace apk
         }
 
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            closing = true;
-            StopKinect(kinectSensorChooser1.Kinect);
-        }
+        //private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        //{
+        //    closing = true;
+        //    StopKinect(kinectSensorChooser1.Kinect);
+        //}
 
     }
 }

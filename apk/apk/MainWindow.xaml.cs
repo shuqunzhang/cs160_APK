@@ -22,6 +22,7 @@ namespace apk
     /// </summary>
     public partial class MainWindow : NavigationWindow
     {
+        HomePage homePage;
         public MainWindow()
         {
             InitializeComponent();
@@ -29,11 +30,12 @@ namespace apk
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            HomePage homePage = new HomePage();
+            homePage = new HomePage();
             this.NavigationService.Navigate(homePage);
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            homePage.StopKinectHack();
         }
 
     }
