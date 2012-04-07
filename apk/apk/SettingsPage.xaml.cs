@@ -48,7 +48,7 @@ namespace apk
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             //kinectSensorChooser1.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser1_KinectSensorChanged);
-            kinectSensorChooser1.Kinect.AllFramesReady += new EventHandler<AllFramesReadyEventArgs>(sensor_AllFramesReady);
+           // kinectSensorChooser1.Kinect.AllFramesReady += new EventHandler<AllFramesReadyEventArgs>(sensor_AllFramesReady);
         }
 
 
@@ -236,6 +236,12 @@ namespace apk
             StopKinect(kinectSensorChooser1.Kinect);
         }
         #endregion SampleCode
+
+        private void button3_Click(object sender, RoutedEventArgs e)
+        {
+            TabooGestures tabboGesture = new TabooGestures();
+            this.NavigationService.Navigate(tabboGesture);
+        }
 
     }
 }

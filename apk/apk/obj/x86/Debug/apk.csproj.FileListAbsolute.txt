@@ -18,6 +18,29 @@ C:\Users\Sherry\Documents\12spring\cs160\apk\apk\bin\Debug\Microsoft.Samples.Kin
 C:\Users\Sherry\Documents\12spring\cs160\apk\apk\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.pdb
 C:\Users\Sherry\Documents\12spring\cs160\apk\apk\obj\x86\Debug\apk.exe
 C:\Users\Sherry\Documents\12spring\cs160\apk\apk\obj\x86\Debug\apk.pdb
+<<<<<<< HEAD
+C:\Users\David\cs160_APK\apk\apk\obj\x86\Debug\apk.exe
+C:\Users\David\cs160_APK\apk\apk\obj\x86\Debug\apk.pdb
+C:\Users\David\cs160_APK\apk\apk\bin\Debug\apk.exe
+C:\Users\David\cs160_APK\apk\apk\bin\Debug\apk.pdb
+C:\Users\David\cs160_APK\apk\apk\bin\Debug\Coding4Fun.Kinect.Wpf.dll
+C:\Users\David\cs160_APK\apk\apk\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.dll
+C:\Users\David\cs160_APK\apk\apk\bin\Debug\Microsoft.Expression.Drawing.dll
+C:\Users\David\cs160_APK\apk\apk\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.pdb
+C:\Users\David\cs160_APK\apk\apk\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\David\cs160_APK\apk\apk\obj\x86\Debug\HomePage.baml
+C:\Users\David\cs160_APK\apk\apk\obj\x86\Debug\MainWindow.baml
+C:\Users\David\cs160_APK\apk\apk\obj\x86\Debug\SettingsPage.baml
+C:\Users\David\cs160_APK\apk\apk\obj\x86\Debug\HomePage.g.cs
+C:\Users\David\cs160_APK\apk\apk\obj\x86\Debug\MainWindow.g.cs
+C:\Users\David\cs160_APK\apk\apk\obj\x86\Debug\SettingsPage.g.cs
+C:\Users\David\cs160_APK\apk\apk\obj\x86\Debug\App.g.cs
+C:\Users\David\cs160_APK\apk\apk\obj\x86\Debug\apk_MarkupCompile.cache
+C:\Users\David\cs160_APK\apk\apk\obj\x86\Debug\apk.g.resources
+C:\Users\David\cs160_APK\apk\apk\obj\x86\Debug\apk.Properties.Resources.resources
+C:\Users\David\cs160_APK\apk\apk\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\David\cs160_APK\apk\apk\obj\x86\Debug\GenerateResource.write.1.tlog
+=======
 C:\Users\Arturo\cs160_APK\apk\apk\obj\x86\Debug\apk.exe
 C:\Users\Arturo\cs160_APK\apk\apk\obj\x86\Debug\apk.pdb
 C:\Users\Arturo\cs160_APK\apk\apk\bin\Debug\apk.exe
@@ -40,3 +63,10 @@ C:\Users\Arturo\cs160_APK\apk\apk\obj\x86\Debug\apk.g.resources
 C:\Users\Arturo\cs160_APK\apk\apk\obj\x86\Debug\apk.Properties.Resources.resources
 C:\Users\Arturo\cs160_APK\apk\apk\obj\x86\Debug\GenerateResource.read.1.tlog
 C:\Users\Arturo\cs160_APK\apk\apk\obj\x86\Debug\GenerateResource.write.1.tlog
+>>>>>>> 0d0dfc6034b49ec4ad03ed1caa553c90744cd677
+C:\Users\David\cs160_APK\apk\apk\obj\x86\Debug\PresentationPage.baml
+C:\Users\David\cs160_APK\apk\apk\obj\x86\Debug\PresentationPage.g.cs
+C:\Users\David\cs160_APK\apk\apk\obj\x86\Debug\TabooGestures.baml
+C:\Users\David\cs160_APK\apk\apk\obj\x86\Debug\TabooGestures.g.cs
+C:\Users\David\Desktop\apk\apk\obj\x86\Debug\apk.exe
+C:\Users\David\Desktop\apk\apk\obj\x86\Debug\apk.pdb
