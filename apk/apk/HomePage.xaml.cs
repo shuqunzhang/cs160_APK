@@ -95,8 +95,8 @@ namespace apk
             }
             else if (b == button1) 
             {
-                PresentationPage presentation = new PresentationPage(kinectSensorChooser1);
-                this.NavigationService.Navigate(presentation);
+                PresentationPage myPresentation = new PresentationPage(kinectSensorChooser1);
+                this.NavigationService.Navigate(myPresentation);
             }
 
         }

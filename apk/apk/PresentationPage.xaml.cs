@@ -38,9 +38,25 @@ namespace apk
         private DateTime previous;
         const int skeletonCount = 6;
         Skeleton[] allSkeletons = new Skeleton[skeletonCount];
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            notice.Visibility = System.Windows.Visibility.Visible;
+            timeRemaining.Visibility = System.Windows.Visibility.Visible;
+            //kinectSensorChooser1.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser1_KinectSensorChanged);
+
+            //This is to customize the action done when all frames are ready. 
+            //(i.e. sets AllFramesReady to point to the one defined in this class)
+            kinectSensorChooser1.Kinect.AllFramesReady += new EventHandler<AllFramesReadyEventArgs>(sensor_AllFramesReady);
+        }
 
         void sensor_AllFramesReady(object sender, AllFramesReadyEventArgs e) 
         {
+
+            if (e == null)
+            {
+                return;
+            }
+
             //Get a skeleton
             Skeleton first = GetFirstSkeleton(e);
 
@@ -51,14 +67,18 @@ namespace apk
 
             //if one second passed do something
             double timePassed = DateTime.Now.Subtract(previous).TotalMilliseconds;
-            if (timePassed > 1000) 
+            if (timePassed > 1000)
             {
+                if (notice.Visibility == System.Windows.Visibility.Hidden)
+                {
+                    return;
+                }
                 int curSeconds = Convert.ToInt32(timeRemaining.Text);
                 if (curSeconds > 0)
                 {
                     timeRemaining.Text = (curSeconds - 1).ToString();
                 }
-                else if (curSeconds == 0) 
+                else if (curSeconds == 0)
                 {
                     notice.Visibility = System.Windows.Visibility.Hidden;
                     timeRemaining.Visibility = System.Windows.Visibility.Hidden;
@@ -92,16 +112,7 @@ namespace apk
         }
         #endregion sameOldGetFirstSkeleton
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            notice.Visibility = System.Windows.Visibility.Visible;
-            timeRemaining.Visibility = System.Windows.Visibility.Visible;
-            //kinectSensorChooser1.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser1_KinectSensorChanged);
-
-            //This is to customize the action done when all frames are ready. 
-            //(i.e. sets AllFramesReady to point to the one defined in this class)
-            kinectSensorChooser1.Kinect.AllFramesReady += new EventHandler<AllFramesReadyEventArgs>(sensor_AllFramesReady);
-        }
+        
 
 
         //void kinectSensorChooser1_KinectSensorChanged(object sender, DependencyPropertyChangedEventArgs e)
