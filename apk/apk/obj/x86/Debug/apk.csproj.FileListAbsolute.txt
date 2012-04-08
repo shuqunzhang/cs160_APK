@@ -116,3 +116,9 @@ C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\obj\x86\Debug\apk.g.r
 C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\obj\x86\Debug\apk.Properties.Resources.resources
 C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\obj\x86\Debug\GenerateResource.read.1.tlog
 C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\bin\Debug\apk.exe
+C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\bin\Debug\apk.pdb
+C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\bin\Debug\Coding4Fun.Kinect.Wpf.dll
+C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.dll
+C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\bin\Debug\Microsoft.Expression.Drawing.dll
+C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.pdb

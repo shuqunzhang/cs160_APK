@@ -28,20 +28,7 @@ namespace apk
             InitializeComponent();
         }
 
-        #region buttons
-        private void button4_Click(object sender, RoutedEventArgs e)
-        {
-            Application curApp = Application.Current;
-            curApp.Shutdown();
-        }
-
-        private void button3_Click(object sender, RoutedEventArgs e)
-        {
-            SettingsPage settings = new SettingsPage();
-            this.NavigationService.Navigate(settings);
-        }
-        #endregion buttons
-
+        #region vars
         bool closing = false;
         const int skeletonCount = 6;
         Skeleton[] allSkeletons = new Skeleton[skeletonCount];
@@ -63,8 +50,10 @@ namespace apk
         private Gesture currentTrack = Gesture.none;
         private int TOLERANCE = 20;
         private int MINDIST = 5;
+        #endregion vars
 
         #region button helpers
+
         private bool is_within(SkeletonPoint dip, double top, double left, double height, double width)
         {
             return top <= dip.Y && dip.Y <= (top + height) && left <= dip.X && dip.X <= (left + width);
@@ -75,30 +64,29 @@ namespace apk
         }
         private Button select_button(SkeletonPoint dip)
         {
-            if (on_button(button1, dip)) return button1;
-            if (on_button(button2, dip)) return button2;
-            if (on_button(button3, dip)) return button3;
-            if (on_button(button4, dip)) return button4;
+            if (on_button(beginButton, dip)) return beginButton;
+            if (on_button(reviewButton, dip)) return reviewButton;
+            if (on_button(settingsButton, dip)) return settingsButton;
+            if (on_button(closeButton, dip)) return closeButton;
             return null;
         }
         private void button_click(Button b)
         {
-            if (b == button3)
+            if (b == settingsButton)
             {
                 SettingsPage settings = new SettingsPage(kinectSensorChooser1);
                 this.NavigationService.Navigate(settings);
             }
-            else if (b == button4)
+            else if (b == closeButton)
             {
                 Application curApp = Application.Current;
                 curApp.Shutdown();
             }
-            else if (b == button1) 
+            else if (b == beginButton) 
             {
                 PresentationPage myPresentation = new PresentationPage(kinectSensorChooser1);
                 this.NavigationService.Navigate(myPresentation);
             }
-
         }
         #endregion button helpers
 
@@ -179,7 +167,7 @@ namespace apk
 
         void sensor_AllFramesReady(object sender, AllFramesReadyEventArgs e)
         {
-            if (closing)
+            if (closing||e==null)
             {
                 return;
             }
@@ -212,13 +200,13 @@ namespace apk
             debug.Content = "";
 
             //for styling buttons on hover,etc
-            button1.Tag = "";
-            button2.Tag = "";
-            button3.Tag = "";
-            button4.Tag = "";
-            if (on_button(button4, currentPos[right]))
+            beginButton.Tag = "";
+            reviewButton.Tag = "";
+            settingsButton.Tag = "";
+            closeButton.Tag = "";
+            if (on_button(closeButton, currentPos[right]))
             { //hovering button4
-                button4.Tag = "hover";
+                closeButton.Tag = "hover";
             }
 
             bool resetTrack = true;
@@ -299,7 +287,7 @@ namespace apk
             }
         }
 
-
+        #region kinectHelpers
         Skeleton GetFirstSkeleton(AllFramesReadyEventArgs e)
         {
             using (SkeletonFrame skeletonFrameData = e.OpenSkeletonFrame())
@@ -321,6 +309,30 @@ namespace apk
 
             }
         }
+
+        private void CameraPosition(FrameworkElement element, ColorImagePoint point)
+        {
+            //Divide by 2 for width and height so point is right in the middle 
+            // instead of in top/left corner
+            Canvas.SetLeft(element, point.X - element.Width / 2);
+            Canvas.SetTop(element, point.Y - element.Height / 2);
+
+        }
+
+        private void ScalePosition(FrameworkElement element, Joint joint)
+        {
+            //convert the value to X/Y
+            //Joint scaledJoint = joint.ScaleTo(1280, 720); 
+
+            //convert & scale (.3 = means 1/3 of joint distance)
+            Joint scaledJoint = joint.ScaleTo(1080, 700, .3f, .3f);
+
+            currentPos[joint.JointType] = scaledJoint.Position;
+            Canvas.SetLeft(element, scaledJoint.Position.X);
+            Canvas.SetTop(element, scaledJoint.Position.Y);
+
+        }
+#endregion kinectHelpers
 
         private void StopKinect(KinectSensor sensor)
         {
@@ -362,31 +374,6 @@ namespace apk
                 }
             }
         }
-
-
-        private void CameraPosition(FrameworkElement element, ColorImagePoint point)
-        {
-            //Divide by 2 for width and height so point is right in the middle 
-            // instead of in top/left corner
-            Canvas.SetLeft(element, point.X - element.Width / 2);
-            Canvas.SetTop(element, point.Y - element.Height / 2);
-
-        }
-
-        private void ScalePosition(FrameworkElement element, Joint joint)
-        {
-            //convert the value to X/Y
-            //Joint scaledJoint = joint.ScaleTo(1280, 720); 
-
-            //convert & scale (.3 = means 1/3 of joint distance)
-            Joint scaledJoint = joint.ScaleTo(1080, 700, .3f, .3f);
-
-            currentPos[joint.JointType] = scaledJoint.Position;
-            Canvas.SetLeft(element, scaledJoint.Position.X);
-            Canvas.SetTop(element, scaledJoint.Position.Y);
-
-        }
-
 
         //private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         //{
