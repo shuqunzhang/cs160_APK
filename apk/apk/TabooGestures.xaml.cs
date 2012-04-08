@@ -29,11 +29,11 @@ namespace apk
             InitializeComponent();
         }
 
-        public TabooGestures(KinectSensorChooser ksc) 
-        {
-            InitializeComponent();
-            kinectSensorChooser1 = ksc;
-        }
+        //public TabooGestures(KinectSensorChooser ksc) 
+        //{
+        //    InitializeComponent();
+        //    kinectSensorChooser1 = ksc;
+        //}
 
 
 
@@ -79,6 +79,64 @@ namespace apk
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             gestureListBox.Items.Add("*Add New Gesture*");
+            
+            //all this ugliness is to do a deep copy of all buttons on this page
+            List<Button> activeButtons = new List<Button>();
+            //so as to not call cGestures.children again
+            UIElementCollection outer = cGestures.Children; 
+            UIElement[] outerCpy = new UIElement[outer.Count];
+            List<UIElement> inner = new List<UIElement>();
+            outer.CopyTo(outerCpy, 0);
+
+            while (inner != null)
+            {
+                foreach (UIElement element in outerCpy)
+                {
+                    if (element is Button)
+                    {
+                        activeButtons.Add((Button)element);
+                    }
+                    else 
+                    {
+                        if (element is Canvas) //assumed all buttons would be in a canvas
+                        {
+                            foreach (UIElement ele in ((Canvas)element).Children)
+                            {
+                                inner.Add(ele);
+                            }
+                        }
+                    }
+                }
+
+                //copied all the buttons in a layer, now go deeper
+                if (inner.Count > 0)
+                {
+                    outerCpy = inner.ToArray();
+                    inner.Clear();
+                }
+                else 
+                {
+                    inner = null;
+                }
+            }
+            MainWindow.updateButtons(activeButtons);
+            MainWindow.setCurrentPageType(MainWindow.PageType.settings);
+            MainWindow.setCurrentPage(this);
+        }
+
+        private void button3_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new SettingsPage());
         }
     }
 }

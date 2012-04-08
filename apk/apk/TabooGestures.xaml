@@ -6,12 +6,12 @@
       mc:Ignorable="d" 
       Height="700" Width="1080" Title="SettingsPage" xmlns:my="clr-namespace:Microsoft.Samples.Kinect.WpfViewers;assembly=Microsoft.Samples.Kinect.WpfViewers" Loaded="Page_Loaded">
 
-    <Canvas>
+    <Canvas Name="cGestures">
         <my:KinectColorViewer Canvas.Left="678" Canvas.Top="40" Name="kinectColorViewer1" Height="281" Width="364" />
         <my:KinectSensorChooser Canvas.Left="318" Canvas.Top="1000" Name="kinectSensorChooser1" Width="328" />
-        <Button Canvas.Left="12" Canvas.Top="538" Content="Back" Height="150" Name="button1" Width="320" FontSize="32" />
-        <Button Canvas.Left="380" Canvas.Top="538" Content="Delete" FontSize="32" Height="150" Name="button2" Width="320" />
-        <Button Canvas.Left="748" Canvas.Top="538" Content="Add New" FontSize="32" Height="150" Name="button3" Width="320" />
+        <Button Canvas.Left="12" Canvas.Top="538" Content="Back" Height="150" Name="button1" Width="320" FontSize="32" Click="button1_Click" />
+        <Button Canvas.Left="380" Canvas.Top="538" Content="Delete" FontSize="32" Height="150" Name="button2" Width="320" Click="button2_Click" />
+        <Button Canvas.Left="748" Canvas.Top="538" Content="Add New" FontSize="32" Height="150" Name="button3" Width="320" Click="button3_Click" />
         
         <ListBox Name="gestureListBox" Height="365" Width="453" Canvas.Left="12" Canvas.Top="103" FontSize="22">
             <ListBoxItem></ListBoxItem>
