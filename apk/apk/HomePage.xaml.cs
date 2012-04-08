@@ -28,6 +28,15 @@ namespace apk
             InitializeComponent();
         }
 
+        public HomePage(KinectSensorChooser ks) 
+        {
+            InitializeComponent();
+            kinectSensorChooser1 = ks;
+            startUp = false;
+        }
+
+        private bool startUp = true;
+
         #region vars
         bool closing = false;
         const int skeletonCount = 6;
@@ -123,7 +132,14 @@ namespace apk
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            kinectSensorChooser1.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser1_KinectSensorChanged);
+            if (startUp)
+            {
+                kinectSensorChooser1.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser1_KinectSensorChanged);
+            }
+            else
+            {
+                kinectSensorChooser1.Kinect.AllFramesReady += new EventHandler<AllFramesReadyEventArgs>(sensor_AllFramesReady);
+            }
         }
 
         void kinectSensorChooser1_KinectSensorChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -248,6 +264,7 @@ namespace apk
             lastPos[JointType.HandLeft] = currentPos[JointType.HandLeft];
         }
 
+        #region kinectHelpers
         void GetCameraPoint(Skeleton first, AllFramesReadyEventArgs e)
         {
 
@@ -287,7 +304,6 @@ namespace apk
             }
         }
 
-        #region kinectHelpers
         Skeleton GetFirstSkeleton(AllFramesReadyEventArgs e)
         {
             using (SkeletonFrame skeletonFrameData = e.OpenSkeletonFrame())
