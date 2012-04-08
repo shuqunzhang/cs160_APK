@@ -11,15 +11,15 @@
             <TextBlock Height="90" Name="startLabel" Text="Begin presentation in:" FontSize="48" Background="White" Width="600" />
             <TextBlock Height="200" Name="startTime" Text="5" FontSize="150" Width="150" TextAlignment="Center" />
         </StackPanel>
-        <StackPanel Canvas.Left="900" Canvas.Top="0" Height="675" Name="stackPanel1" Width="180">
+        <StackPanel Canvas.Left="900" Canvas.Top="0" Height="675" Name="infoPanel" Width="180">
             <Label Content="0:00" Height="122" Name="timeLabel" FontSize="64" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
-            <Label Content="Posture" FontSize="48" Height="75" HorizontalContentAlignment="Center" Name="label1" />
-            <Label Content="Motion" FontSize="48" Height="75" HorizontalContentAlignment="Center" Name="label5" />
-            <Label Content="Gesture" FontSize="48" Height="75" HorizontalContentAlignment="Center" Name="label2" />
-            <Label Content="Gesture" FontSize="24" Height="48" HorizontalContentAlignment="Center" Name="label6" />
-            <Label Content="Word" FontSize="48" Height="75" HorizontalContentAlignment="Center" Name="label3" />
-            <Label Content="Word" FontSize="24" Height="48" HorizontalContentAlignment="Center" Name="label7" />
-            <Label Content="Volume" FontSize="48" Height="75" HorizontalContentAlignment="Center" Name="label4" />
+            <Label Content="Posture" FontSize="48" Height="75" HorizontalContentAlignment="Center" Name="postureLabel" />
+            <Label Content="Motion" FontSize="48" Height="75" HorizontalContentAlignment="Center" Name="motionLabel" />
+            <Label Content="Gesture" FontSize="48" Height="75" HorizontalContentAlignment="Center" Name="gestureLabel" />
+            <Label Content="Gesture" FontSize="24" Height="48" HorizontalContentAlignment="Center" Name="gestureDetail" />
+            <Label Content="Word" FontSize="48" Height="75" HorizontalContentAlignment="Center" Name="wordLabel" />
+            <Label Content="Word" FontSize="24" Height="48" HorizontalContentAlignment="Center" Name="wordDetail" />
+            <Label Content="Volume" FontSize="48" Height="75" HorizontalContentAlignment="Center" Name="volumeLabel" />
             <my:KinectAudioViewer Name="kinectAudioViewer1" Height="63" Width="180" />
         </StackPanel>
     </Canvas>

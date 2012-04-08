@@ -7,12 +7,12 @@
     <Canvas>
         <my:KinectColorViewer Canvas.Left="553" Canvas.Top="47" Width="500" Height="375" Name="kinectColorViewer1" Kinect="{Binding ElementName=kinectSensorChooser1, Path=Kinect}" />
         <my:KinectSensorChooser Canvas.Left="0" Canvas.Top="1000" Name="kinectSensorChooser1" Width="328" />
-        <Button Canvas.Left="26" Canvas.Top="19" Content="Begin Presentation" Height="200" Name="button1" Width="500" FontSize="48" FontWeight="Normal" FontFamily="Segoe UI" />
-        <Button Canvas.Left="26" Canvas.Top="249" Content="Review Presentation" Height="200" Name="button2" Width="500" FontSize="48" />
-        <Button Canvas.Left="26" Canvas.Top="479" Content="Change Settings" Height="200" Name="button3" Width="500" FontSize="48" Click="button3_Click" />
-        <Button Canvas.Left="553" Canvas.Top="479" Content="Close Application" Height="200" Name="button4" Width="500" FontSize="48" Click="button4_Click" />
-        <Ellipse Canvas.Right="0" Canvas.Bottom="0" Fill="#FF2CACE3" Height="30" Name="cursor" Width="30" Opacity="0.75" Stroke="White" />
+        <Button Canvas.Left="26" Canvas.Top="19" Content="Begin Presentation" Height="200" Name="beginButton" Width="500" FontSize="48" />
+        <Button Canvas.Left="26" Canvas.Top="249" Content="Review Presentation" Height="200" Name="reviewButton" Width="500" FontSize="48" />
+        <Button Canvas.Left="26" Canvas.Top="479" Content="Change Settings" Height="200" Name="settingsButton" Width="500" FontSize="48" />
+        <Button Canvas.Left="553" Canvas.Top="479" Content="Close Application" Height="200" Name="closeButton" Width="500" FontSize="48" />
+        <Ellipse Canvas.Right="0" Canvas.Top="0" Fill="#FF2CACE3" Height="30" Name="cursor" Width="30" Opacity="0.75" Stroke="White" />
         <Label Canvas.Left="0" Canvas.Top="690" Content="debug" Height="79" Name="debug" Width="1080" FontSize="48" />
-        <Ellipse Canvas.Right="0" Canvas.Bottom="0" Fill="#FFFFFF" Height="30" Name="nothing" Width="30" Opacity="0" />
+        <Ellipse Canvas.Right="12" Canvas.Bottom="0" Fill="#FFFFFF" Height="30" Name="nothing" Width="30" Opacity="0" />
     </Canvas>
 </Page>
