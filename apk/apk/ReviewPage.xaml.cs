@@ -79,8 +79,8 @@ namespace apk
         {
             if (b == returnButton)
             {
-                HomePage home = new HomePage(kinectSensorChooser1);
-                this.NavigationService.Navigate(home);
+                //HomePage home = new HomePage(kinectSensorChooser1);
+                //this.NavigationService.Navigate(home);
             }
             else if (b == saveButton)
             {
@@ -125,7 +125,7 @@ namespace apk
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            kinectSensorChooser1.Kinect.AllFramesReady += new EventHandler<AllFramesReadyEventArgs>(sensor_AllFramesReady);
+            //kinectSensorChooser1.Kinect.AllFramesReady += new EventHandler<AllFramesReadyEventArgs>(sensor_AllFramesReady);
         }
     }
 }
