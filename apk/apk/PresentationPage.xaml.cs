@@ -40,8 +40,8 @@ namespace apk
         Skeleton[] allSkeletons = new Skeleton[skeletonCount];
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            notice.Visibility = System.Windows.Visibility.Visible;
-            timeRemaining.Visibility = System.Windows.Visibility.Visible;
+            startLabel.Visibility = System.Windows.Visibility.Visible;
+            startTime.Visibility = System.Windows.Visibility.Visible;
             //kinectSensorChooser1.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser1_KinectSensorChanged);
 
             //This is to customize the action done when all frames are ready. 
@@ -69,20 +69,20 @@ namespace apk
             double timePassed = DateTime.Now.Subtract(previous).TotalMilliseconds;
             if (timePassed > 1000)
             {
-                if (notice.Visibility == System.Windows.Visibility.Hidden)
+                if (startLabel.Visibility == System.Windows.Visibility.Hidden)
                 {
                     return;
                 }
-                int curSeconds = Convert.ToInt32(timeRemaining.Text);
+                int curSeconds = Convert.ToInt32(startTime.Text);
                 if (curSeconds > 0)
                 {
-                    timeRemaining.Text = (curSeconds - 1).ToString();
+                    startTime.Text = (curSeconds - 1).ToString();
                 }
                 else if (curSeconds == 0)
                 {
-                    notice.Visibility = System.Windows.Visibility.Hidden;
-                    timeRemaining.Visibility = System.Windows.Visibility.Hidden;
-                    timeRemaining.Text = "5";
+                    startLabel.Visibility = System.Windows.Visibility.Hidden;
+                    startTime.Visibility = System.Windows.Visibility.Hidden;
+                    startTime.Text = "5";
                 }
                 previous = DateTime.Now;
             }

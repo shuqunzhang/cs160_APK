@@ -18,13 +18,13 @@
         </ListBox>
         
         <Label Canvas.Left="12" Canvas.Top="40" Content="Taboo Gestures" Height="57" Name="label1" Width="295" FontSize="32" />
-        <Canvas Width="692" Height="300" Canvas.Top="325" Canvas.Left="165" Background="White" Name="NotificationCanvas" Visibility="Hidden">
+        <Canvas Width="692" Height="300" Canvas.Top="262" Canvas.Left="224" Background="White" Name="NotificationCanvas" Visibility="Hidden">
             <Label Content="Add a new gesture." FontSize="32" Canvas.Left="6" Canvas.Top="6" />
             <Label Canvas.Left="6" Canvas.Top="66" Content="Hold a pose for 5 seconds." FontSize="32" Height="77" Width="416" />
             <Label Canvas.Left="6" Canvas.Top="126" Content="ex. arms crossed, hands behind head, etc" FontSize="32" Height="65" Width="614" />
         </Canvas>
         
-        <Canvas Width="692" Height="300" Canvas.Top="325" Canvas.Left="165" Background="White" Name="GestureNameNotification" Visibility="Hidden">
+        <Canvas Width="692" Height="300" Canvas.Top="262" Canvas.Left="224" Background="White" Name="GestureNameNotification" Visibility="Hidden">
             <Label Content="Say a name for this gesture" FontSize="32" Canvas.Left="153" Canvas.Top="90" />
             <TextBox Canvas.Left="44" Canvas.Top="183" Height="56" Name="GestureNameInput" Width="394" FontSize="26" />
             <Button Canvas.Left="487" Canvas.Top="149" Content="Done" Height="108" Name="button4" Width="179" FontSize="26" Click="button4_Click" />

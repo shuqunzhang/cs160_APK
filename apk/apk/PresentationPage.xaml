@@ -4,9 +4,23 @@
         Height="700" Width="1080" Title="PresentationPage"
         xmlns:my="clr-namespace:Microsoft.Samples.Kinect.WpfViewers;assembly=Microsoft.Samples.Kinect.WpfViewers" Loaded="Page_Loaded">
     <Canvas>
-        <my:KinectColorViewer Canvas.Left="12" Canvas.Top="12" Width="786" Height="484" Name="kinectColorViewer1" Kinect="{Binding ElementName=kinectSensorChooser1, Path=Kinect}" />
+        <my:KinectColorViewer Canvas.Left="0" Canvas.Top="0" Width="900" Height="675" Name="kinectColorViewer1" Kinect="{Binding ElementName=kinectSensorChooser1, Path=Kinect}" />
         <my:KinectSensorChooser Canvas.Left="0" Canvas.Top="1000" Name="kinectSensorChooser1" Width="328" />
-        <TextBlock Canvas.Left="345" Canvas.Top="275" Height="150" Name="notice" Text="Begin presentation in:" FontSize="40" Visibility="Hidden" Background="White"/>
-        <TextBlock Canvas.Left="528" Canvas.Top="349" Height="54" Name="timeRemaining" Text="5" FontSize="40" Width="24" Visibility="Hidden" Background="Yellow"/>
+        <Label Canvas.Left="0" Canvas.Top="652" Content="Hold hands above head for 3 seconds to end the presentation." Height="48" Name="endLabel" Width="1080" FontSize="24" HorizontalContentAlignment="Center" Background="#FF030303" Foreground="White" Panel.ZIndex="1" />
+        <StackPanel Name ="startPanel" Canvas.Left="268" Canvas.Top="127" Height="400" Width="600" Visibility="Hidden" Background="White">
+            <TextBlock Height="90" Name="startLabel" Text="Begin presentation in:" FontSize="48" Background="White" Width="600" />
+            <TextBlock Height="200" Name="startTime" Text="5" FontSize="150" Width="150" TextAlignment="Center" />
+        </StackPanel>
+        <StackPanel Canvas.Left="900" Canvas.Top="0" Height="675" Name="stackPanel1" Width="180">
+            <Label Content="0:00" Height="122" Name="timeLabel" FontSize="64" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+            <Label Content="Posture" FontSize="48" Height="75" HorizontalContentAlignment="Center" Name="label1" />
+            <Label Content="Motion" FontSize="48" Height="75" HorizontalContentAlignment="Center" Name="label5" />
+            <Label Content="Gesture" FontSize="48" Height="75" HorizontalContentAlignment="Center" Name="label2" />
+            <Label Content="Gesture" FontSize="24" Height="48" HorizontalContentAlignment="Center" Name="label6" />
+            <Label Content="Word" FontSize="48" Height="75" HorizontalContentAlignment="Center" Name="label3" />
+            <Label Content="Word" FontSize="24" Height="48" HorizontalContentAlignment="Center" Name="label7" />
+            <Label Content="Volume" FontSize="48" Height="75" HorizontalContentAlignment="Center" Name="label4" />
+            <my:KinectAudioViewer Name="kinectAudioViewer1" Height="63" Width="180" />
+        </StackPanel>
     </Canvas>
 </Page>
