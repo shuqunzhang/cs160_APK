@@ -12,26 +12,31 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Kinect;
-using Coding4Fun.Kinect.Wpf;
 using Microsoft.Samples.Kinect.WpfViewers;
+using Coding4Fun.Kinect.Wpf;
 using System.Windows.Threading;
 
 namespace apk
 {
     /// <summary>
-    /// Interaction logic for HomePage.xaml
+    /// Interaction logic for ReviewPage.xaml
     /// </summary>
-    public partial class HomePage : Page
+    public partial class ResultPage : Page
     {
-        public HomePage()
+
+        DispatcherTimer timer = new DispatcherTimer();
+
+        public ResultPage()
         {
             InitializeComponent();
+            timer.Tick += new EventHandler(hideSaved);
+            timer.Interval = new TimeSpan(0, 0, 1);
         }
-        
+
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             List<Button> activeButtons = new List<Button>();
-            foreach(UIElement element in cHomePage.Children)
+            foreach(UIElement element in cResult.Children)
             {
                 if (element is Button)
                 {
@@ -39,31 +44,31 @@ namespace apk
                 }
             }
             MainWindow.updateButtons(activeButtons);
-            MainWindow.setCurrentPageType(MainWindow.PageType.home);
+            MainWindow.setCurrentPageType(MainWindow.PageType.result);
             MainWindow.setCurrentPage(this);
         }
 
-        private void beginClick(object sender, RoutedEventArgs e)
+        private void returnClick(object sender, RoutedEventArgs e)
         {
-            PresentationPage ppage = new PresentationPage();
-            this.NavigationService.Navigate(ppage);
+            this.NavigationService.Navigate(new HomePage());
         }
 
-        private void reviewClick(object sender, RoutedEventArgs e)
+        private void saveClick(object sender, RoutedEventArgs e)
         {
-            ResultPage rpage = new ResultPage();
-            this.NavigationService.Navigate(rpage);
+            savedLabel.Visibility = System.Windows.Visibility.Visible;
+            MainWindow.lastNoteTime = DateTime.Now;
+            timer.Start();
         }
 
-        private void settingsClick(object sender, RoutedEventArgs e)
+        private void presentClick(object sender, RoutedEventArgs e)
         {
-            SettingsPage spage = new SettingsPage();
-            this.NavigationService.Navigate(spage);
+            this.NavigationService.Navigate(new PresentationPage());
         }
 
-        private void closeClick(object sender, RoutedEventArgs e)
+        private void hideSaved(object sender, EventArgs e)
         {
-            MainWindow.closeApplication();
+            timer.Stop();
+            savedLabel.Visibility = System.Windows.Visibility.Hidden;
         }
 
     }

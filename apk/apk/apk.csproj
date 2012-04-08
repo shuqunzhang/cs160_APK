@@ -62,8 +62,8 @@
     <Compile Include="PresentationPage.xaml.cs">
       <DependentUpon>PresentationPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ReviewPage.xaml.cs">
-      <DependentUpon>ReviewPage.xaml</DependentUpon>
+    <Compile Include="ResultPage.xaml.cs">
+      <DependentUpon>ResultPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -94,7 +94,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ReviewPage.xaml">
+    <Page Include="ResultPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

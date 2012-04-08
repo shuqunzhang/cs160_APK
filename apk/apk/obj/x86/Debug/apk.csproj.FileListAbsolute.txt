@@ -77,13 +77,11 @@ C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\obj\x86\Debug\Resolve
 C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\obj\x86\Debug\HomePage.baml
 C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\obj\x86\Debug\MainWindow.baml
 C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\obj\x86\Debug\PresentationPage.baml
-C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\obj\x86\Debug\ReviewPage.baml
 C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\obj\x86\Debug\SettingsPage.baml
 C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\obj\x86\Debug\TabooGestures.baml
 C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\obj\x86\Debug\HomePage.g.cs
 C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\obj\x86\Debug\MainWindow.g.cs
 C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\obj\x86\Debug\PresentationPage.g.cs
-C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\obj\x86\Debug\ReviewPage.g.cs
 C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\obj\x86\Debug\SettingsPage.g.cs
 C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\obj\x86\Debug\TabooGestures.g.cs
 C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\obj\x86\Debug\App.g.cs
@@ -96,7 +94,6 @@ C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\bin\Debug\apk.exe
 C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\bin\Debug\apk.pdb
 C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\bin\Debug\Coding4Fun.Kinect.Wpf.dll
 C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.dll
-C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\bin\Debug\Microsoft.Expression.Drawing.dll
 C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.pdb
 C:\Users\Arturo\cs160_APK\apk\apk\bin\Debug\apk.exe
 C:\Users\Arturo\cs160_APK\apk\apk\bin\Debug\apk.pdb
@@ -124,3 +121,5 @@ C:\Users\Arturo\cs160_APK\apk\apk\obj\x86\Debug\GenerateResource.read.1.tlog
 C:\Users\Arturo\cs160_APK\apk\apk\obj\x86\Debug\GenerateResource.write.1.tlog
 C:\Users\Arturo\cs160_APK\apk\apk\obj\x86\Debug\apk.exe
 C:\Users\Arturo\cs160_APK\apk\apk\obj\x86\Debug\apk.pdb
+C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\obj\x86\Debug\ResultPage.baml
+C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\obj\x86\Debug\ResultPage.g.cs

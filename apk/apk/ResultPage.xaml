@@ -1,9 +1,9 @@
-﻿<Page x:Class="apk.ReviewPage"
+﻿<Page x:Class="apk.ResultPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Height="700" Width="1080" Title="PresentationPage"
         xmlns:my="clr-namespace:Microsoft.Samples.Kinect.WpfViewers;assembly=Microsoft.Samples.Kinect.WpfViewers" Loaded="Page_Loaded">
-    <Canvas>
+    <Canvas Name="cResult">
         <Ellipse Canvas.Right="0" Canvas.Top="0" Fill="#FF2CACE3" Height="30" Name="cursor" Width="30" Opacity="0.75" Stroke="White" />
         <my:KinectColorViewer Canvas.Left="668" Canvas.Top="12" Width="400" Height="300" Name="kinectColorViewer1" Kinect="{Binding ElementName=kinectSensorChooser1, Path=Kinect}" />
         <my:KinectSensorChooser Canvas.Left="0" Canvas.Top="1000" Name="kinectSensorChooser1" Width="328" />
@@ -16,14 +16,13 @@
                 <Label Content="Label" Height="50" Name="label5" FontSize="32" />
             </StackPanel>
         </StackPanel>
-        <Button Canvas.Left="12" Canvas.Top="553" Content="Return Home" Height="135" Name="returnButton" Width="340" FontSize="48" />
-        <Button Canvas.Left="370" Canvas.Top="553" Content="Save Results" Height="135" Name="saveButton" Width="340" FontSize="48" />
-        <Button Canvas.Left="728" Canvas.Top="553" Content="Present Again" Height="135" Name="presentButton" Width="340" FontSize="48" />
+        <Button Canvas.Left="12" Canvas.Top="553" Content="Return Home" Height="135" Name="returnButton" Width="340" FontSize="48" Click="returnClick"/>
+        <Button Canvas.Left="370" Canvas.Top="553" Content="Save Results" Height="135" Name="saveButton" Width="340" FontSize="48" Click="saveClick"/>
+        <Button Canvas.Left="728" Canvas.Top="553" Content="Present Again" Height="135" Name="presentButton" Width="340" FontSize="48" Click="presentClick"/>
         <StackPanel Canvas.Left="668" Canvas.Top="345" Height="197" Name="timePanel" Width="400">
             <Label Content="Time:" Height="60" Name="timeLabel" FontSize="36" />
             <Label Content="0:00" Height="80" Name="time" HorizontalContentAlignment="Center" FontSize="56" />
         </StackPanel>
-        <Rectangle Canvas.Left="347" Canvas.Top="172" Height="250" Name="rectangle1" Stroke="Black" Width="400" Fill="White" StrokeThickness="5" />
-        <Label Canvas.Left="347" Canvas.Top="172" Content="Result Saved!" Height="250" Width="400" Name="savedLabel" FontSize="56" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Visibility="Hidden"/>
+        <Label Canvas.Left="347" Canvas.Top="172" Content="Result Saved!" Height="250" Width="400" Name="savedLabel" FontSize="56" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Visibility="Hidden" Background="#FFEEEEEE" />
     </Canvas>
 </Page>

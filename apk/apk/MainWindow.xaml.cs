@@ -26,6 +26,9 @@ namespace apk
         #region variables
         private static List<Button> buttonList;
         public static KinectSensorChooser ksc;
+        public enum PageType : int { home, settings, presentation, result, review, gestures, words };
+        private static Page currentPage;
+        private static PageType currentPageType;
         bool closing = false;
         const int skeletonCount = 6;
         Skeleton[] allSkeletons = new Skeleton[skeletonCount];
@@ -42,8 +45,10 @@ namespace apk
             {JointType.HandRight, new SkeletonPoint()},
             {JointType.HandLeft, new SkeletonPoint()},
         };
+        public static DateTime loadedTime;
+        public static DateTime lastNoteTime;
         private DateTime lastKeyTime;
-        private enum Gesture : int { none, left_push };
+        private enum Gesture : int { none, left_push, ending};
         private Gesture currentTrack = Gesture.none;
         private int TOLERANCE = 20;
         private int MINDIST = 5;
@@ -64,37 +69,24 @@ namespace apk
                 oldButton = buttonList.ElementAt(i);
                 oldButton.Visibility = Visibility.Hidden;
                 oldButton.IsEnabled = false;
-
+            }
+            for (int i = 0; i < bl.Count; i++)
+            {
                 newButton = bl[i];
                 newButton.Visibility = Visibility.Visible;
                 newButton.IsEnabled = true;
             }
             buttonList = bl;
         }
-
-        public static void closeApplication() 
+        public static void setCurrentPageType(PageType p)
         {
-            closeKinect(ksc.Kinect);
+            currentPageType = p;
+        }
+        public static void setCurrentPage(Page p)
+        {
+            currentPage = p;
         }
 
-        public static void closeKinect(KinectSensor sensor)
-        {
-            if (sensor != null)
-            {
-                if (sensor.IsRunning)
-                {
-                    //stop sensor 
-                    sensor.Stop();
-
-                    //stop audio if not null
-                    if (sensor.AudioSource != null)
-                    {
-                        sensor.AudioSource.Stop();
-                    }
-                }
-            }
-        }
-        
         #region button helpers
 
         private bool is_within(SkeletonPoint dip, double top, double left, double height, double width)
@@ -107,10 +99,10 @@ namespace apk
         }
         private Button select_button(SkeletonPoint dip)
         {
-            for (int i = 0; i < buttonList.Count; i++) 
+            for (int i = 0; i < buttonList.Count; i++)
             {
                 Button aButton = buttonList[i];
-                if (on_button(aButton, dip)) 
+                if (on_button(aButton, dip))
                 {
                     return aButton;
                 }
@@ -148,6 +140,32 @@ namespace apk
                 && Math.Abs(currentPos[jt].Z - lastPos[jt].Z) < TOLERANCE;
         }
         #endregion gesture helpers
+
+        public static void closeApplication() 
+        {
+            closeKinect(ksc.Kinect);
+            Application curApp = Application.Current;
+            curApp.Shutdown();
+        }
+
+        public static void closeKinect(KinectSensor sensor)
+        {
+            if (sensor != null)
+            {
+                if (sensor.IsRunning)
+                {
+                    //stop sensor 
+                    sensor.Stop();
+
+                    //stop audio if not null
+                    if (sensor.AudioSource != null)
+                    {
+                        sensor.AudioSource.Stop();
+                    }
+                }
+            }
+        }
+        
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -216,9 +234,15 @@ namespace apk
             }
 
 
+            //not important, I just didn't want to keep typing JointType.blah over and over
+            JointType right = JointType.HandRight;
+            JointType left = JointType.HandLeft;
+            JointType head = JointType.Head;
+
             //set scaled position
             ScalePosition(cursor, first.Joints[JointType.HandRight]);
             ScalePosition(nothing, first.Joints[JointType.HandLeft]);
+            ScalePosition(nothing, first.Joints[JointType.Head]);
 
             //GetCameraPoint(first, e);
 
@@ -227,56 +251,133 @@ namespace apk
 
             TimeSpan timeDifference = DateTime.Now - lastKeyTime;
 
-            //not important, I just didn't want to keep typing JointType.blah over and over
-            JointType right = JointType.HandRight;
-            JointType left = JointType.HandLeft;
-
             //debugging
             //debug.Content = "";
 
             //for styling buttons on hover,etc
-            //beginButton.Tag = "";
-            //reviewButton.Tag = "";
-            //settingsButton.Tag = "";
-            //closeButton.Tag = "";
-            //if (on_button(closeButton, currentPos[right]))
-            //{ //hovering button4
-            //    closeButton.Tag = "hover";
-            //}
+            Button selectedButton = select_button(currentPos[right]);
+            if (selectedButton != null)
+            {
+                selectedButton.Tag = "hover";
+            }
 
             bool resetTrack = true;
-            switch (currentTrack)
+            switch (currentPageType)
             {
-                case Gesture.none:
-                    resetTrack = false;
-                    if (is_push(left))
-                    { //push w/ left hand
-                        currentTrack = Gesture.left_push;
-                        lastKeyTime = DateTime.Now;
-                        lastKeyPos[JointType.HandLeft] = currentPos[JointType.HandLeft];
+                case PageType.home:
+                case PageType.result:
+                    #region Home
+                    switch (currentTrack)
+                    {
+                        case Gesture.none:
+                            resetTrack = false;
+                            if (is_push(left))
+                            { //push w/ left hand
+                                currentTrack = Gesture.left_push;
+                                lastKeyTime = DateTime.Now;
+                                lastKeyPos[JointType.HandLeft] = currentPos[JointType.HandLeft];
+                            }
+                            break;
+
+                        case Gesture.left_push:
+                            if (is_push(left))
+                            {
+                                resetTrack = false;
+                                if (lastKeyPos[left].Z - currentPos[left].Z > 0.15)
+                                {
+                                    if (selectedButton != null)
+                                    {
+                                        selectedButton.Tag = "press";
+                                        if (selectedButton.IsEnabled)
+                                        {
+                                            selectedButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                                        }
+                                        resetTrack = true;
+                                    }
+                                }
+                            }
+                            break;
                     }
+                    #endregion Home
                     break;
 
-                case Gesture.left_push:
-                    if (is_push(left))
+
+                case PageType.settings:
+                    #region Settings
+                    switch (currentTrack)
                     {
-                        resetTrack = false;
-                        if (lastKeyPos[left].Z - currentPos[left].Z > 0.15)
-                        {
-                            Button b = select_button(currentPos[right]);
-                            if (b != null)
-                            {
-                                b.Tag = "press";
-                                if (b.IsEnabled)
-                                {
-                                    b.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                                }
-                                resetTrack = true;
+                        case Gesture.none:
+                            resetTrack = false;
+                            if (is_push(left))
+                            { //push w/ left hand
+                                currentTrack = Gesture.left_push;
+                                lastKeyTime = DateTime.Now;
+                                lastKeyPos[JointType.HandLeft] = currentPos[JointType.HandLeft];
                             }
-                        }
+                            break;
+
+                        case Gesture.left_push:
+                            if (is_push(left))
+                            {
+                                resetTrack = false;
+                                if (lastKeyPos[left].Z - currentPos[left].Z > 0.15)
+                                {
+                                    if (selectedButton != null)
+                                    {
+                                        selectedButton.Tag = "press";
+                                        if (selectedButton.IsEnabled)
+                                        {
+                                            selectedButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                                        }
+                                        resetTrack = true;
+                                    }
+                                }
+                            }
+                            break;
                     }
+                    #endregion Settings
+                    break;
+
+
+                case PageType.presentation:
+                    #region Presentation
+                    PresentationPage pp = (PresentationPage)currentPage;
+                    if ((DateTime.Now - loadedTime).Seconds < 5)
+                    {
+                        pp.changeCount(5 - (DateTime.Now - loadedTime).Seconds);
+                    }
+                    pp.finishCount();
+                    switch (currentTrack)
+                    {
+                        case Gesture.none:
+                            resetTrack = false;
+                            if (currentPos[right].Y < currentPos[head].Y && currentPos[left].Y < currentPos[head].Y)
+                            { //both hands over head
+                                currentTrack = Gesture.ending;
+                                lastKeyTime = DateTime.Now;
+                                lastKeyPos[left] = currentPos[left];
+                                lastKeyPos[right] = currentPos[right];
+                                lastKeyPos[head] = currentPos[head];
+                            }
+                            break;
+
+                        case Gesture.ending:
+                            if (isStill(head) && isStill(right) && isStill(left))
+                            {
+                                resetTrack = false;
+                                if ((DateTime.Now - lastKeyTime).Seconds > 3)
+                                {
+                                    ResultPage result = new ResultPage();
+                                    blank.NavigationService.Navigate(result);
+                                    resetTrack = true;
+                                }
+                            }
+                            break;
+                    }
+                    #endregion Presentation
                     break;
             }
+            
             if (resetTrack)
             {
                 currentTrack = Gesture.none;
@@ -284,48 +385,10 @@ namespace apk
             }
             lastPos[JointType.HandRight] = currentPos[JointType.HandRight];
             lastPos[JointType.HandLeft] = currentPos[JointType.HandLeft];
+            lastPos[JointType.Head] = currentPos[JointType.Head];
         }
 
         #region kinectHelpers
-        void GetCameraPoint(Skeleton first, AllFramesReadyEventArgs e)
-        {
-
-            using (DepthImageFrame depth = e.OpenDepthImageFrame())
-            {
-                if (depth == null ||
-                    ksc.Kinect == null)
-                {
-                    return;
-                }
-
-                //Map a joint location to a point on the depth map
-                //left hand
-                DepthImagePoint leftDepthPoint =
-                    depth.MapFromSkeletonPoint(first.Joints[JointType.HandLeft].Position);
-                //right hand
-                DepthImagePoint rightDepthPoint =
-                    depth.MapFromSkeletonPoint(first.Joints[JointType.HandRight].Position);
-
-
-                //Map a depth point to a point on the color image
-                //left hand
-                ColorImagePoint leftColorPoint =
-                    depth.MapToColorImagePoint(leftDepthPoint.X, leftDepthPoint.Y,
-                    ColorImageFormat.RgbResolution640x480Fps30);
-                //right hand
-                ColorImagePoint rightColorPoint =
-                    depth.MapToColorImagePoint(rightDepthPoint.X, rightDepthPoint.Y,
-                    ColorImageFormat.RgbResolution640x480Fps30);
-
-                //Set location
-                //CameraPosition(leftEllipse, leftColorPoint);
-                CameraPosition(cursor, rightColorPoint);
-
-                //currentPos[JointType.HandRight] = rightDepthPoint;
-                //currentPos[JointType.HandLeft] = leftDepthPoint;
-            }
-        }
-
         Skeleton GetFirstSkeleton(AllFramesReadyEventArgs e)
         {
             using (SkeletonFrame skeletonFrameData = e.OpenSkeletonFrame())
@@ -346,15 +409,6 @@ namespace apk
                 return first;
 
             }
-        }
-
-        private void CameraPosition(FrameworkElement element, ColorImagePoint point)
-        {
-            //Divide by 2 for width and height so point is right in the middle 
-            // instead of in top/left corner
-            Canvas.SetLeft(element, point.X - element.Width / 2);
-            Canvas.SetTop(element, point.Y - element.Height / 2);
-
         }
 
         private void ScalePosition(FrameworkElement element, Joint joint)
