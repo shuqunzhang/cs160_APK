@@ -29,56 +29,9 @@ namespace apk
             InitializeComponent();
         }
 
-        //public TabooGestures(KinectSensorChooser ksc) 
-        //{
-        //    InitializeComponent();
-        //    kinectSensorChooser1 = ksc;
-        //}
-
-
-
-        //Calling this method changes the visibility of the new gesture notification window between
-        //visible and hidden, depending on its current state
-        private void change_notification_visibility()
-        {
-            if (NotificationCanvas.Visibility == System.Windows.Visibility.Hidden)
-            {
-                NotificationCanvas.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                NotificationCanvas.Visibility = Visibility.Hidden;
-            }
-        }
-
-        //Calling this method changes the visibility of the gesture name notification window between
-        //visible and hidden, depending on its current state
-        private void change_nameNotification_visibility()
-        {
-            if (GestureNameNotification.Visibility == System.Windows.Visibility.Hidden)
-            {
-                GestureNameNotification.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                GestureNameNotification.Visibility = Visibility.Hidden;
-            }
-        }
-
-        private void button4_Click(object sender, RoutedEventArgs e)
-        {
-            if (GestureNameInput == null)
-            {
-                return;
-            }
-            gestureListBox.Items.Add(GestureNameInput.Text);
-            GestureNameInput.Text = ""; //clears the text box
-            change_nameNotification_visibility(); 
-        }
-
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            gestureListBox.Items.Add("*Add New Gesture*");
+            //gestureListBox.Items.Add("*Add New Gesture*");
             
             //all this ugliness is to do a deep copy of all buttons on this page
             List<Button> activeButtons = new List<Button>();
@@ -120,23 +73,46 @@ namespace apk
                 }
             }
             MainWindow.updateButtons(activeButtons);
-            MainWindow.setCurrentPageType(MainWindow.PageType.settings);
+            MainWindow.setCurrentPageType(MainWindow.PageType.gestures);
             MainWindow.setCurrentPage(this);
         }
 
-        private void button3_Click(object sender, RoutedEventArgs e)
+        public void goNameInput()
         {
-
+            directionsPanel.Visibility = System.Windows.Visibility.Hidden;
+            nameInputPanel.Visibility = System.Windows.Visibility.Visible;
         }
 
-        private void button2_Click(object sender, RoutedEventArgs e)
+        private void addClick(object sender, RoutedEventArgs e)
         {
-
+            directionsPanel.Visibility = System.Windows.Visibility.Visible;
+            panelBorder.Visibility = System.Windows.Visibility.Visible;
         }
 
-        private void button1_Click(object sender, RoutedEventArgs e)
+        private void deleteClick(object sender, RoutedEventArgs e)
+        {
+            if (gestureListBox.SelectedItem != null)
+            {
+                gestureListBox.Items.Remove(gestureListBox.SelectedItem);
+            }
+        }
+
+        private void backClick(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new SettingsPage());
         }
+
+        private void okClick(object sender, RoutedEventArgs e)
+        {
+            if (nameInput == null)
+            {
+                return;
+            }
+            gestureListBox.Items.Add(nameInput.Text);
+            nameInput.Text = ""; //clears the text box
+            nameInputPanel.Visibility = System.Windows.Visibility.Hidden;
+            panelBorder.Visibility = System.Windows.Visibility.Hidden;
+        }
+
     }
 }

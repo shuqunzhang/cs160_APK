@@ -35,6 +35,9 @@ namespace apk
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            gesturesListBox.Items.Add("Taboo Gestures Breakdown:");
+            wordsListBox.Items.Add("Taboo Words Breakdown:");
+
             List<Button> activeButtons = new List<Button>();
             foreach(UIElement element in cResult.Children)
             {

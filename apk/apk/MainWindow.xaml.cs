@@ -48,9 +48,10 @@ namespace apk
         public static DateTime loadedTime;
         public static DateTime lastNoteTime;
         private DateTime lastKeyTime;
-        private enum Gesture : int { none, left_push, ending};
+        private enum Gesture : int { none, left_push, ending, still};
         private Gesture currentTrack = Gesture.none;
-        private int TOLERANCE = 20;
+        private double PUSHDIST = 0.2;
+        private int TOLERANCE = 10;
         private int MINDIST = 5;
         #endregion variables
         public MainWindow()
@@ -240,9 +241,16 @@ namespace apk
             JointType head = JointType.Head;
 
             //set scaled position
-            ScalePosition(cursor, first.Joints[JointType.HandRight]);
-            ScalePosition(nothing, first.Joints[JointType.HandLeft]);
-            ScalePosition(nothing, first.Joints[JointType.Head]);
+            if (currentPageType == PageType.presentation)
+            {
+                ScaleAbsolutePosition(cursor, first.Joints[right]);
+            }
+            else
+            {
+                ScalePosition(cursor, first.Joints[JointType.HandRight]);
+            }
+            ScaleAbsolutePosition(leftEllipse, first.Joints[left]);
+            ScaleAbsolutePosition(headEllipse, first.Joints[head]);
 
             //GetCameraPoint(first, e);
 
@@ -252,10 +260,15 @@ namespace apk
             TimeSpan timeDifference = DateTime.Now - lastKeyTime;
 
             //debugging
-            //debug.Content = "";
+            //debug.Foreground = Brushes.Red;
+            //debug.Content = "R.Y:" + currentPos[right].Y + " L.Y:" + currentPos[left].Y + " H.Y:" + currentPos[head].Y;
 
             //for styling buttons on hover,etc
             Button selectedButton = select_button(currentPos[right]);
+            for (int i = 0; i < buttonList.Count; i++)
+            {
+                buttonList[i].Tag = "";
+            }
             if (selectedButton != null)
             {
                 selectedButton.Tag = "hover";
@@ -283,17 +296,17 @@ namespace apk
                             if (is_push(left))
                             {
                                 resetTrack = false;
-                                if (lastKeyPos[left].Z - currentPos[left].Z > 0.15)
+                                if (lastKeyPos[left].Z - currentPos[left].Z > PUSHDIST)
                                 {
                                     if (selectedButton != null)
                                     {
-                                        selectedButton.Tag = "press";
                                         if (selectedButton.IsEnabled)
                                         {
+                                            selectedButton.Tag = "press";
                                             selectedButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                                         }
-                                        resetTrack = true;
                                     }
+                                    resetTrack = true;
                                 }
                             }
                             break;
@@ -320,7 +333,7 @@ namespace apk
                             if (is_push(left))
                             {
                                 resetTrack = false;
-                                if (lastKeyPos[left].Z - currentPos[left].Z > 0.15)
+                                if (lastKeyPos[left].Z - currentPos[left].Z > PUSHDIST)
                                 {
                                     if (selectedButton != null)
                                     {
@@ -341,12 +354,15 @@ namespace apk
 
                 case PageType.presentation:
                     #region Presentation
+                    cursor.Visibility = System.Windows.Visibility.Hidden;
                     PresentationPage pp = (PresentationPage)currentPage;
                     if ((DateTime.Now - loadedTime).Seconds < 5)
                     {
                         pp.changeCount(5 - (DateTime.Now - loadedTime).Seconds);
+                        return;
                     }
                     pp.finishCount();
+                    pp.changeTime((DateTime.Now - loadedTime).Seconds - 5);
                     switch (currentTrack)
                     {
                         case Gesture.none:
@@ -365,16 +381,74 @@ namespace apk
                             if (isStill(head) && isStill(right) && isStill(left))
                             {
                                 resetTrack = false;
-                                if ((DateTime.Now - lastKeyTime).Seconds > 3)
+                                if ((DateTime.Now - lastKeyTime).Seconds > 2)
                                 {
                                     ResultPage result = new ResultPage();
                                     blank.NavigationService.Navigate(result);
+                                    cursor.Visibility = System.Windows.Visibility.Visible;
                                     resetTrack = true;
                                 }
                             }
                             break;
                     }
                     #endregion Presentation
+                    break;
+
+                case PageType.gestures:
+                    #region gestures
+                    TabooGestures tgp = (TabooGestures)currentPage;
+                    switch (currentTrack)
+                    {
+                        case Gesture.none:
+                            resetTrack = false;
+                            if (is_push(left))
+                            { //push w/ left hand
+                                currentTrack = Gesture.left_push;
+                                lastKeyTime = DateTime.Now;
+                                lastKeyPos[JointType.HandLeft] = currentPos[JointType.HandLeft];
+                            }
+                            if (isStill(head) && isStill(right) && isStill(left))
+                            {
+                                if (tgp.directionsPanel.Visibility == System.Windows.Visibility.Visible)
+                                { //holding still
+                                    currentTrack = Gesture.still;
+                                    lastKeyTime = DateTime.Now;
+                                }
+                            }
+                            break;
+
+                        case Gesture.left_push:
+                            if (is_push(left))
+                            {
+                                resetTrack = false;
+                                if (lastKeyPos[left].Z - currentPos[left].Z > PUSHDIST)
+                                {
+                                    if (selectedButton != null)
+                                    {
+                                        selectedButton.Tag = "press";
+                                        if (selectedButton.IsEnabled)
+                                        {
+                                            selectedButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                                        }
+                                        resetTrack = true;
+                                    }
+                                }
+                            }
+                            break;
+
+                        case Gesture.still:
+                            if (isStill(head) && isStill(right) && isStill(left))
+                            {
+                                resetTrack = false;
+                                if ((DateTime.Now - lastKeyTime).Seconds > 2)
+                                {
+                                    tgp.goNameInput();
+                                    resetTrack = true;
+                                }
+                            }
+                            break;
+                    }
+                    #endregion gestures
                     break;
             }
             
@@ -418,6 +492,20 @@ namespace apk
 
             //convert & scale (.3 = means 1/3 of joint distance)
             Joint scaledJoint = joint.ScaleTo(1080, 700, .3f, .3f);
+
+            currentPos[joint.JointType] = scaledJoint.Position;
+            Canvas.SetLeft(element, scaledJoint.Position.X);
+            Canvas.SetTop(element, scaledJoint.Position.Y);
+
+        }
+
+        private void ScaleAbsolutePosition(FrameworkElement element, Joint joint)
+        {
+            //convert the value to X/Y
+            //Joint scaledJoint = joint.ScaleTo(1280, 720); 
+
+            //convert & scale (.3 = means 1/3 of joint distance)
+            Joint scaledJoint = joint.ScaleTo(1080, 700);
 
             currentPos[joint.JointType] = scaledJoint.Position;
             Canvas.SetLeft(element, scaledJoint.Position.X);

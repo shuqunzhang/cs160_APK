@@ -4,6 +4,39 @@
         Height="700" Width="1080" Title="HomePage" Loaded="Page_Loaded"
         xmlns:my="clr-namespace:Microsoft.Samples.Kinect.WpfViewers;assembly=Microsoft.Samples.Kinect.WpfViewers" Name="xn1">
 
+    <Page.Resources>
+        <Style TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="48px"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" BorderThickness="3" Padding="0" BorderBrush="black" CornerRadius="10" Background="#EEEEEE">
+                            <Grid >
+                                <ContentPresenter HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" Name="content"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Tag" Value="hover">
+                                <Setter TargetName="border" Property="Background" Value="#AAAAAA" />
+                            </Trigger>
+                            <Trigger Property="Tag" Value="press">
+                                <Setter TargetName="border" Property="Background" Value="gray" />
+                                <Setter Property="Foreground" Value="White" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.4" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+
     <Canvas Name="cHomePage">
         <my:KinectColorViewer Canvas.Left="553" Canvas.Top="47" Width="500" Height="375" Name="kinectColorViewer1" Kinect="{Binding ElementName=kinectSensorChooser1, Path=Kinect}" />
         <my:KinectSensorChooser Canvas.Left="0" Canvas.Top="1000" Name="kinectSensorChooser1" Width="328" />
@@ -11,6 +44,5 @@
         <Button Canvas.Left="26" Canvas.Top="249" Content="Review Presentation" Height="200" Name="reviewButton" Width="500" FontSize="48" Click="reviewClick"/>
         <Button Canvas.Left="26" Canvas.Top="479" Content="Change Settings" Height="200" Name="settingsButton" Width="500" FontSize="48" Click="settingsClick"/>
         <Button Canvas.Left="553" Canvas.Top="479" Content="Close Application" Height="200" Name="closeButton" Width="500" FontSize="48" Click="closeClick"/>
-        <Label Canvas.Left="0" Canvas.Top="690" Content="debug" Height="79" Name="debug" Width="1080" FontSize="48" />
     </Canvas>
 </Page>

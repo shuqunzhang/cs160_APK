@@ -6,28 +6,60 @@
       mc:Ignorable="d" 
       Height="700" Width="1080" Title="SettingsPage" xmlns:my="clr-namespace:Microsoft.Samples.Kinect.WpfViewers;assembly=Microsoft.Samples.Kinect.WpfViewers" Loaded="Page_Loaded">
 
+    <Page.Resources>
+        <Style TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="48px"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" BorderThickness="3" Padding="0" BorderBrush="black" CornerRadius="10" Background="#EEEEEE">
+                            <Grid >
+                                <ContentPresenter HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" Name="content"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Tag" Value="hover">
+                                <Setter TargetName="border" Property="Background" Value="#AAAAAA" />
+                            </Trigger>
+                            <Trigger Property="Tag" Value="press">
+                                <Setter TargetName="border" Property="Background" Value="gray" />
+                                <Setter Property="Foreground" Value="White" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.4" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
     <Canvas Name="cGestures">
-        <my:KinectColorViewer Canvas.Left="678" Canvas.Top="40" Name="kinectColorViewer1" Height="281" Width="364" />
+        <my:KinectColorViewer Canvas.Left="668" Canvas.Top="12" Name="kinectColorViewer1" Height="300" Width="400" Kinect="{Binding ElementName=kinectSensorChooser1, Path=Kinect}" />
         <my:KinectSensorChooser Canvas.Left="318" Canvas.Top="1000" Name="kinectSensorChooser1" Width="328" />
-        <Button Canvas.Left="12" Canvas.Top="538" Content="Back" Height="150" Name="button1" Width="320" FontSize="32" Click="button1_Click" />
-        <Button Canvas.Left="380" Canvas.Top="538" Content="Delete" FontSize="32" Height="150" Name="button2" Width="320" Click="button2_Click" />
-        <Button Canvas.Left="748" Canvas.Top="538" Content="Add New" FontSize="32" Height="150" Name="button3" Width="320" Click="button3_Click" />
-        
-        <ListBox Name="gestureListBox" Height="365" Width="453" Canvas.Left="12" Canvas.Top="103" FontSize="22">
+        <Button Canvas.Left="12" Canvas.Top="553" Content="Back" Height="135" Name="backButton" Width="340" FontSize="48" Click="backClick"/>
+        <Button Canvas.Left="370" Canvas.Top="553" Content="Delete" Height="135" Name="deleteButton" Width="340" FontSize="48" Click="deleteClick"/>
+        <Button Canvas.Left="728" Canvas.Top="553" Content="Add New" Height="135" Name="addButton" Width="340" FontSize="48" Click="addClick"/>
+
+        <ListBox Name="gestureListBox" Height="466" Width="634" Canvas.Left="12" Canvas.Top="80" FontSize="36">
             <ListBoxItem></ListBoxItem>
         </ListBox>
-        
-        <Label Canvas.Left="12" Canvas.Top="40" Content="Taboo Gestures" Height="57" Name="label1" Width="295" FontSize="32" />
-        <Canvas Width="692" Height="300" Canvas.Top="262" Canvas.Left="224" Background="White" Name="NotificationCanvas" Visibility="Hidden">
-            <Label Content="Add a new gesture." FontSize="32" Canvas.Left="6" Canvas.Top="6" />
-            <Label Canvas.Left="6" Canvas.Top="66" Content="Hold a pose for 5 seconds." FontSize="32" Height="77" Width="416" />
-            <Label Canvas.Left="6" Canvas.Top="126" Content="ex. arms crossed, hands behind head, etc" FontSize="32" Height="65" Width="614" />
-        </Canvas>
-        
-        <Canvas Width="692" Height="300" Canvas.Top="262" Canvas.Left="224" Background="White" Name="GestureNameNotification" Visibility="Hidden">
-            <Label Content="Say a name for this gesture" FontSize="32" Canvas.Left="153" Canvas.Top="90" />
-            <TextBox Canvas.Left="44" Canvas.Top="183" Height="56" Name="GestureNameInput" Width="394" FontSize="26" />
-            <Button Canvas.Left="487" Canvas.Top="149" Content="Done" Height="108" Name="button4" Width="179" FontSize="26" Click="button4_Click" />
-        </Canvas>
+
+        <Label Canvas.Left="12" Canvas.Top="12" Content="Taboo Gestures" Height="84" Name="label1" Width="500" FontSize="48" />
+        <StackPanel Canvas.Left="270" Canvas.Top="318" Height="300" Name="nameInputPanel" Width="600" Background="white" Visibility="Hidden">
+            <Label Content="Say a name for this gesture." FontSize="36" Height="60" />
+            <TextBox Height="60" Name="nameInput" Width="400" Margin="25" FontSize="36" />
+            <Button Content="OK" Height="100" Name="okButton" Width="200" FontSize="48" Click="okClick"/>
+        </StackPanel>
+        <StackPanel Canvas.Left="270" Canvas.Top="318" Height="300" Name="directionsPanel" Width="600" Background="white" Visibility="Hidden">
+            <Label Content="Add a new gesture:" Height="60" Name="label2" FontSize="36" Background="#111111" Foreground="White" />
+            <Label Content="Hold a pose for 3 seconds. (ex//" FontSize="34" Height="100" Name="label3" VerticalContentAlignment="Bottom" />
+            <Label Content="arms crossed, hands behind head, etc.)" FontSize="34" Height="100" Name="label4" VerticalContentAlignment="Center" />
+        </StackPanel>
+        <Rectangle Height="300" Name="panelBorder" Stroke="Black" Width="600" Canvas.Left="270" Canvas.Top="318" StrokeThickness="3" Visibility="Hidden"/>
     </Canvas>
 </Page>

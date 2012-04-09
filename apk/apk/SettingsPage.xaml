@@ -4,14 +4,62 @@
         Height="700" Width="1080" Title="SettingsPage" Loaded="Page_Loaded" ShowsNavigationUI="False"
         xmlns:my="clr-namespace:Microsoft.Samples.Kinect.WpfViewers;assembly=Microsoft.Samples.Kinect.WpfViewers">
 
-    <Canvas Name="cSettings">
-        <my:KinectColorViewer Canvas.Left="35" Canvas.Top="138" Width="480" Height="360" Name="kinectColorViewer1" Kinect="{Binding ElementName=kinectSensorChooser1, Path=Kinect}" />
+    <Page.Resources>
+        <Style TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="48px"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" BorderThickness="3" Padding="0" BorderBrush="black" CornerRadius="10" Background="#EEEEEE">
+                            <Grid >
+                                <ContentPresenter HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" Name="content"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Tag" Value="hover">
+                                <Setter TargetName="border" Property="Background" Value="#AAAAAA" />
+                            </Trigger>
+                            <Trigger Property="Tag" Value="press">
+                                <Setter TargetName="border" Property="Background" Value="gray" />
+                                <Setter Property="Foreground" Value="White" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.4" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <Canvas Name="cSettings" KeyDown="proceed" Focusable="True">
+        <my:KinectColorViewer Canvas.Left="45" Canvas.Top="107" Width="480" Height="360" Name="kinectColorViewer1" Kinect="{Binding ElementName=kinectSensorChooser1, Path=Kinect}" />
         <my:KinectSensorChooser Canvas.Left="0" Canvas.Top="1000" Name="kinectSensorChooser1" Width="328" />
         <Button Canvas.Left="568" Canvas.Top="40" Content="Set Range of Motion" Height="150" Name="rangeButton" Width="500" FontSize="42" Click="rangeClick"/>
         <Button Canvas.Left="568" Canvas.Top="205" Content="Manage Taboo Gestures" Height="150" Name="gesturesButton" Width="500" FontSize="42" Click="gesturesClick" />
         <Button Canvas.Left="568" Canvas.Top="368" Content="Manage Taboo Words" Height="150" Name="wordsButton" Width="500" FontSize="42" Click="wordsClick"/>
         <Button Canvas.Left="24" Canvas.Top="534" Content="Return Home" Height="150" Name="homeButton" Width="500" FontSize="42" Click="homeClick"/>
-        <Button Canvas.Left="568" Canvas.Top="533" Content="Set Volume" FontSize="42" Height="150" Name="volumeButtn" Width="500" Click="volumeClick"/>
-        <TextBlock Canvas.Left="35" Canvas.Top="40" Height="84" Name="textBlock1" Text="Settings" FontSize="64"/>
+        <Button Canvas.Left="568" Canvas.Top="533" Content="Set Volume" FontSize="42" Height="150" Name="volumeButton" Width="500" Click="volumeClick"/>
+        <TextBlock Canvas.Left="24" Canvas.Top="12" Height="84" Name="textBlock1" Text="Settings" FontSize="64"/>
+        <Label Canvas.Left="352" Canvas.Top="196" Content="Setting Saved!" Height="250" Name="savedLabel" FontSize="56" Width="400" Background="Gray" Visibility="Hidden" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="White" />
+        <StackPanel Canvas.Left="152" Canvas.Top="470" Height="215" Name="rightRangePanel" Width="800" Background="white" Visibility="Hidden">
+            <Label Content="Set Range of Motion:" Height="64" Name="label1" FontSize="36" Background="#FF111111" Foreground="White" />
+            <Label Content="Hold your RIGHT hand at your RIGHT boundary" Height="64" Name="label2" FontSize="36" Padding="10" />
+            <Label Content="for 3 seconds." FontSize="36" Height="64" Name="label3" Padding="10" />
+        </StackPanel>
+        <StackPanel Background="white" Canvas.Left="152" Canvas.Top="470" Height="215" Name="leftRangePanel" Width="800" Visibility="Hidden">
+            <Label Background="#FF111111" Content="Set Range of Motion:" FontSize="36" Foreground="White" Height="64" Name="label4" />
+            <Label Content="Hold your LEFT hand at your LEFT boundary" FontSize="36" Height="64" Name="label5" Padding="10" />
+            <Label Content="for 3 seconds." FontSize="36" Height="64" Name="label6" Padding="10" />
+        </StackPanel>
+        <StackPanel Background="white" Canvas.Left="152" Canvas.Top="470" Height="215" Name="volumePanel" Width="800" Visibility="Hidden">
+            <Label Background="#FF111111" Content="Set Volume Level:" FontSize="36" Foreground="White" Height="64" Name="label7" />
+            <Label Content="Count to five out loud in your desired volume." FontSize="36" Height="64" Name="label8" Padding="10" />
+        </StackPanel>
+        <Rectangle Height="215" Name="panelBorder" Stroke="Black" Width="800" Canvas.Left="152" Canvas.Top="470" StrokeThickness="3" Visibility="Hidden"/>
     </Canvas>
 </Page>

@@ -31,6 +31,7 @@ namespace apk
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            cPresentation.Focus();
             startPanel.Visibility = System.Windows.Visibility.Visible;
             //kinectSensorChooser1.Kinect.AllFramesReady += new EventHandler<AllFramesReadyEventArgs>(sensor_AllFramesReady);
             List<Button> activeButtons = new List<Button>();
@@ -52,6 +53,34 @@ namespace apk
         }
         public void finishCount(){
             startPanel.Visibility = System.Windows.Visibility.Hidden;
+        }
+        public void changeTime(int i) //i = now - loadTime - 5
+        {
+            timeLabel.Content = "" + i / 60 + ":" + (i % 60 < 10 ? "0"+i % 60 : ""+i % 60);
+        }
+
+        void toggleLabels(object sender, KeyEventArgs e) //aka wizard of oz
+        {
+            switch (e.Key)
+            {
+                case Key.P:
+                    postureLabel.Foreground = (postureLabel.Foreground == Brushes.Gray) ? Brushes.Red : Brushes.Gray;
+                    break;
+                case Key.M:
+                    motionLabel.Foreground = (motionLabel.Foreground == Brushes.Gray) ? Brushes.Red : Brushes.Gray;
+                    break;
+                case Key.G:
+                    gestureLabel.Foreground = (gestureLabel.Foreground == Brushes.Gray) ? Brushes.Red : Brushes.Gray;
+                    gestureDetail.Foreground = (gestureDetail.Foreground == Brushes.White) ? Brushes.Black : Brushes.White;
+                    break;
+                case Key.W:
+                    wordLabel.Foreground = (wordLabel.Foreground == Brushes.Gray) ? Brushes.Red : Brushes.Gray;
+                    wordDetail.Foreground = (wordDetail.Foreground == Brushes.White) ? Brushes.Black : Brushes.White;
+                    break;
+                case Key.V:
+                    volumeLabel.Foreground = (volumeLabel.Foreground == Brushes.Gray) ? Brushes.Red : Brushes.Gray;
+                    break;
+            }
         }
     }
 }

@@ -5,11 +5,14 @@
         Height="750" 
         Width="1110" Loaded="Window_Loaded" Closing="Window_Closing" 
         SizeToContent="Manual" xmlns:my="clr-namespace:Microsoft.Samples.Kinect.WpfViewers;assembly=Microsoft.Samples.Kinect.WpfViewers">
+    
     <Canvas>
         <Frame Height ="700" Width="1080" Name="blank" Loaded="blank_Loaded" NavigationUIVisibility="Hidden"></Frame>
-        <my:KinectSensorChooser Canvas.Left="0" Canvas.Top="700" Name="kinectSensorChooser1" Width="328" />
+        <my:KinectSensorChooser Canvas.Left="0" Canvas.Top="718" Name="kinectSensorChooser1" Width="328" />
         <Ellipse Canvas.Right="0" Canvas.Top="0" Fill="#FF2CACE3" Height="30" Name="cursor" Width="30" Opacity="0.75" Stroke="White" />
-        <Ellipse Canvas.Right="12" Canvas.Bottom="0" Fill="#FFFFFF" Height="30" Name="nothing" Width="30" Opacity="0" />
+        <Ellipse Canvas.Right="12" Canvas.Bottom="0" Fill="pink" Height="30" Name="leftEllipse" Width="30" Opacity="0" />
+        <Ellipse Canvas.Right="12" Canvas.Bottom="0" Fill="pink" Height="30" Name="headEllipse" Width="30" Opacity="0" />
+        <Label Canvas.Left="0" Canvas.Top="611" Content="debug" Height="100" Name="debug" Width="1088" FontSize="48" Visibility="Hidden"/>
     </Canvas>
     
 </Window>
