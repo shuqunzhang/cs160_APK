@@ -57,9 +57,9 @@
             <Label Content="for 3 seconds." FontSize="36" Height="64" Name="label6" Padding="10" />
         </StackPanel>
         <StackPanel Background="white" Canvas.Left="152" Canvas.Top="470" Height="215" Name="volumePanel" Width="800" Visibility="Hidden">
-            <Label Background="#FF111111" Content="Set Volume Level:" FontSize="36" Foreground="White" Height="64" Name="label7" />
-            <Label Content="Count to five out loud in your desired volume." FontSize="36" Height="64" Name="label8" Padding="10" />
-        </StackPanel>
+            <Label Background="#FF111111" Content="Set Desired Volume Level:" FontSize="36" Foreground="White" Height="64" Name="label7" />
+            <Label Content="Count to five outloud in the desired volume level" FontSize="36" Height="64" Name="label8" Padding="10" />
+         </StackPanel>
         <Rectangle Height="215" Name="panelBorder" Stroke="Black" Width="800" Canvas.Left="152" Canvas.Top="470" StrokeThickness="3" Visibility="Hidden"/>
     </Canvas>
 </Page>

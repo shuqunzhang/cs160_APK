@@ -36,6 +36,7 @@ namespace apk
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             gesturesListBox.Items.Add("Taboo Gestures Breakdown:");
+            gesturesListBox.Items.Add("Hands in Pocket - 2");
             wordsListBox.Items.Add("Taboo Words Breakdown:");
 
             List<Button> activeButtons = new List<Button>();

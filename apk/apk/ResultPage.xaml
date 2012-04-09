@@ -61,7 +61,7 @@
         <Button Canvas.Left="728" Canvas.Top="553" Content="Present Again" Height="135" Name="presentButton" Width="340" FontSize="48" Click="presentClick"/>
         <StackPanel Canvas.Left="668" Canvas.Top="345" Height="197" Name="timePanel" Width="400" Background="#FFEEEEEE">
             <Label Content="Time:" Height="60" Name="timeLabel" FontSize="36" Foreground="White" Background="#FF111111" />
-            <Label Content="0:00" Height="80" Name="time" HorizontalContentAlignment="Center" FontSize="56" Margin="25" />
+            <Label Content="1:23" Height="80" Name="time" HorizontalContentAlignment="Center" FontSize="56" Margin="25" />
         </StackPanel>
         <Label Canvas.Left="350" Canvas.Top="200" Content="Result Saved!" Height="250" Width="400" Name="savedLabel" FontSize="56" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Visibility="Hidden" Background="Gray" Foreground="White" Panel.ZIndex="1" />
         <ListBox Canvas.Left="12" Canvas.Top="333" Height="209" Name="gesturesListBox" Width="316" FontSize="24" />
