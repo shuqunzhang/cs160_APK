@@ -63,6 +63,7 @@ namespace apk
 
         private void wordsClick(object sender, RoutedEventArgs e)
         {
+            this.NavigationService.Navigate(new TabooWords());
         }
 
         private void homeClick(object sender, RoutedEventArgs e)
@@ -77,25 +78,43 @@ namespace apk
             panelBorder.Visibility = System.Windows.Visibility.Visible;
         }
 
+        public void saveVolume(double vl)
+        {
+            MainWindow.volumeLevel = vl;
+            volumePanel.Visibility = System.Windows.Visibility.Hidden;
+            panelBorder.Visibility = System.Windows.Visibility.Hidden;
+            savedLabel.Visibility = System.Windows.Visibility.Visible;
+            MainWindow.lastNoteTime = DateTime.Now;
+            timer.Start();
+        }
+
+        public void saveRightRange(double rr)
+        {
+            MainWindow.rightRange = rr;
+            rightRangePanel.Visibility = System.Windows.Visibility.Hidden;
+            leftRangePanel.Visibility = System.Windows.Visibility.Visible;
+        }
+
+        public void saveLeftRange(double lr)
+        {
+            MainWindow.leftRange = lr;
+            leftRangePanel.Visibility = System.Windows.Visibility.Hidden;
+            panelBorder.Visibility = System.Windows.Visibility.Hidden;
+            savedLabel.Visibility = System.Windows.Visibility.Visible;
+            MainWindow.lastNoteTime = DateTime.Now;
+            timer.Start();
+        }
+
         void proceed(object sender, KeyEventArgs e) //aka wizard of oz
         {
             switch (e.Key){
                 case Key.Return:
                     if(volumePanel.Visibility == System.Windows.Visibility.Visible){
-                        volumePanel.Visibility = System.Windows.Visibility.Hidden;
-                        panelBorder.Visibility = System.Windows.Visibility.Hidden;
-                        savedLabel.Visibility = System.Windows.Visibility.Visible;
-                        MainWindow.lastNoteTime = DateTime.Now;
-                        timer.Start();
+                        saveVolume(0);
                     } else if (rightRangePanel.Visibility == System.Windows.Visibility.Visible){
-                        rightRangePanel.Visibility = System.Windows.Visibility.Hidden;
-                        leftRangePanel.Visibility = System.Windows.Visibility.Visible;
+                        saveRightRange(0);
                     } else if (leftRangePanel.Visibility == System.Windows.Visibility.Visible){
-                        leftRangePanel.Visibility = System.Windows.Visibility.Hidden;
-                        panelBorder.Visibility = System.Windows.Visibility.Hidden;
-                        savedLabel.Visibility = System.Windows.Visibility.Visible;
-                        MainWindow.lastNoteTime = DateTime.Now;
-                        timer.Start();
+                        saveLeftRange(0);
                     }
                     break;
             }

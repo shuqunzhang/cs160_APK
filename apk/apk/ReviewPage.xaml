@@ -1,0 +1,51 @@
+﻿<Page x:Class="apk.ReviewPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      Height="700" Width="1080" Title="ReviewPage" xmlns:my="clr-namespace:Microsoft.Samples.Kinect.WpfViewers;assembly=Microsoft.Samples.Kinect.WpfViewers" Loaded="Page_Loaded">
+
+    <Page.Resources>
+        <Style TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="48px"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" BorderThickness="3" Padding="0" BorderBrush="black" CornerRadius="10" Background="#EEEEEE">
+                            <Grid >
+                                <ContentPresenter HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" Name="content"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Tag" Value="hover">
+                                <Setter TargetName="border" Property="Background" Value="#AAAAAA" />
+                            </Trigger>
+                            <Trigger Property="Tag" Value="press">
+                                <Setter TargetName="border" Property="Background" Value="gray" />
+                                <Setter Property="Foreground" Value="White" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.4" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <Canvas Name="cReview">
+        <my:KinectSensorChooser Canvas.Left="318" Canvas.Top="1000" Name="kinectSensorChooser1" Width="328" />
+        <Button Canvas.Left="12" Canvas.Top="553" Content="Back" Height="135" Name="backButton" Width="340" FontSize="48" Click="backClick"/>
+        <Button Canvas.Left="728" Canvas.Top="553" Content="Review" Height="135" Name="resultButton" Width="340" FontSize="48" Click="resultClick"/>
+
+        <ListBox Name="resultsListBox" Height="466" Width="634" Canvas.Left="225" Canvas.Top="78" FontSize="36">
+            <ListBoxItem></ListBoxItem>
+        </ListBox>
+        <Label Canvas.Left="300" Canvas.Top="12" Content="Review a Presentation" Height="98" Name="label1" Width="500" FontSize="48" />
+    </Canvas>
+</Page>

@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\obj\x86\Debug\
+C:\Users\Sherry\Documents\12spring\cs160\APK\apk\apk\obj\x86\Debug\
 apk
 none
 false
 DEBUG;TRACE
-C:\Users\Sherry\Documents\12spring\cs160\cs160_APK\apk\apk\App.xaml
-61468851957
+C:\Users\Sherry\Documents\12spring\cs160\APK\apk\apk\App.xaml
+9647921629
 
-11-1683714611
-15-666194412
-HomePage.xaml;MainWindow.xaml;PresentationPage.xaml;ResultPage.xaml;SettingsPage.xaml;TabooGestures.xaml;
+15-1444998634
+15553947695
+HomePage.xaml;MainWindow.xaml;PresentationPage.xaml;ResultPage.xaml;ReviewPage.xaml;ReviewResultPage.xaml;SettingsPage.xaml;TabooGestures.xaml;TabooWords.xaml;
 
 False
 

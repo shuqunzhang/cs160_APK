@@ -24,6 +24,16 @@ namespace apk
     public partial class MainWindow : Window
     {
         #region variables
+        public static Dictionary <String, Result> results = new Dictionary<String, Result>();
+        public static Dictionary<String, JointCollection> tabooGestures = new Dictionary<String, JointCollection>();
+        public static List<String> tabooWords = new List<String>();
+        public static double volumeLevel;
+        public static double rightRange;
+        public static double leftRange;
+        public static JointCollection tempPos;
+        public static bool setTempPos = false;
+        public static JointCollection currentJoints;
+
         private static List<Button> buttonList;
         public static KinectSensorChooser ksc;
         public enum PageType : int { home, settings, presentation, result, review, gestures, words };
@@ -46,14 +56,16 @@ namespace apk
             {JointType.HandLeft, new SkeletonPoint()},
         };
         public static DateTime loadedTime;
+        private bool presStarted;
         public static DateTime lastNoteTime;
         private DateTime lastKeyTime;
-        private enum Gesture : int { none, left_push, ending, still};
+        private enum Gesture : int { none, left_push, ending, still, rightStill, leftStill};
         private Gesture currentTrack = Gesture.none;
         private double PUSHDIST = 0.2;
         private int TOLERANCE = 10;
         private int MINDIST = 5;
         #endregion variables
+
         public MainWindow()
         {
             InitializeComponent();
@@ -61,6 +73,7 @@ namespace apk
             ksc = kinectSensorChooser1;
         }
 
+        #region setup
         public static void updateButtons(List<Button> bl) 
         {
             Button oldButton;
@@ -87,6 +100,7 @@ namespace apk
         {
             currentPage = p;
         }
+        #endregion setup
 
         #region button helpers
 
@@ -115,9 +129,9 @@ namespace apk
         #region gesture helpers
         private bool is_push(JointType jt)
         {
-            return currentPos[jt].Z < lastPos[jt].Z
-                && Math.Abs(currentPos[jt].X - lastPos[jt].X) < TOLERANCE * 2
-                && Math.Abs(currentPos[jt].Y - lastPos[jt].Y) < TOLERANCE * 2;
+            return currentPos[jt].Z < lastPos[jt].Z - 0.02;
+                //&& Math.Abs(currentPos[jt].X - lastPos[jt].X) < TOLERANCE * 2
+                //&& Math.Abs(currentPos[jt].Y - lastPos[jt].Y) < TOLERANCE * 2;
         }
         private bool is_swipe_left(JointType jt)
         {
@@ -142,7 +156,50 @@ namespace apk
         }
         #endregion gesture helpers
 
-        public static void closeApplication() 
+        #region presentation helpers
+        //still a shitton of wizard of oz btw
+        bool isBadPosture()
+        {
+            PresentationPage pp = (PresentationPage)currentPage;
+            return pp.postureLabel.Foreground == Brushes.Red;
+        }
+        bool isBadRange()
+        {
+            return currentPos[JointType.Head].X > rightRange || currentPos[JointType.Head].X < leftRange;
+        }
+        bool isBadVolume()
+        {
+            PresentationPage pp = (PresentationPage)currentPage;
+            return pp.volumeLabel.Foreground == Brushes.Red;
+        }
+        bool similar(JointCollection current, JointCollection taboo)
+        {
+            return false;
+        }
+        String isBadGesture()
+        {
+            PresentationPage pp = (PresentationPage)currentPage;
+            foreach (String g in tabooGestures.Keys)
+            {
+                if (pp.gestureDetail.Foreground == Brushes.Black && g.Equals(pp.gestureDetail.Content))
+                {
+                    return g;
+                }
+                //if (similar(currentJoints, tabooGestures[g]))
+                //{
+                //    return g;
+                //}
+            }
+            return null;
+        }
+        String isBadWord()
+        {
+            return null;
+        }
+        #endregion presentation helpers
+
+        #region load/close
+        public static void closeApplication()
         {
             closeKinect(ksc.Kinect);
             Application curApp = Application.Current;
@@ -166,7 +223,6 @@ namespace apk
                 }
             }
         }
-        
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -218,6 +274,7 @@ namespace apk
                 ksc.AppConflictOccurred();
             }
         }
+        #endregion load/close
 
         void sensor_AllFramesReady(object sender, AllFramesReadyEventArgs e)
         {
@@ -275,11 +332,13 @@ namespace apk
             }
 
             bool resetTrack = true;
+            cursor.Visibility = System.Windows.Visibility.Visible;
             switch (currentPageType)
             {
                 case PageType.home:
                 case PageType.result:
-                    #region Home
+                case PageType.review:
+                    #region Button Only
                     switch (currentTrack)
                     {
                         case Gesture.none:
@@ -311,16 +370,33 @@ namespace apk
                             }
                             break;
                     }
-                    #endregion Home
+                    #endregion Button Only
                     break;
 
 
                 case PageType.settings:
                     #region Settings
+                    SettingsPage sp = (SettingsPage)currentPage;
                     switch (currentTrack)
                     {
                         case Gesture.none:
                             resetTrack = false;
+                            if (sp.rightRangePanel.Visibility == System.Windows.Visibility.Visible)
+                            {
+                                if (isStill(right))
+                                {
+                                    currentTrack = Gesture.rightStill;
+                                    lastKeyTime = DateTime.Now;
+                                }
+                            }
+                            if (sp.leftRangePanel.Visibility == System.Windows.Visibility.Visible)
+                            {
+                                if (isStill(left))
+                                {
+                                    currentTrack = Gesture.leftStill;
+                                    lastKeyTime = DateTime.Now;
+                                }
+                            }
                             if (is_push(left))
                             { //push w/ left hand
                                 currentTrack = Gesture.left_push;
@@ -344,6 +420,28 @@ namespace apk
                                         }
                                         resetTrack = true;
                                     }
+                                }
+                            }
+                            break;
+                        case Gesture.rightStill:
+                            if (isStill(right))
+                            {
+                                resetTrack = false;
+                                if ((DateTime.Now - lastKeyTime).Seconds > 2)
+                                {
+                                    sp.saveRightRange(currentPos[right].X);
+                                    resetTrack = true;
+                                }
+                            }
+                            break;
+                        case Gesture.leftStill:
+                            if (isStill(left))
+                            {
+                                resetTrack = false;
+                                if ((DateTime.Now - lastKeyTime).Seconds > 2)
+                                {
+                                    sp.saveLeftRange(currentPos[left].X);
+                                    resetTrack = true;
                                 }
                             }
                             break;
@@ -358,17 +456,40 @@ namespace apk
                     PresentationPage pp = (PresentationPage)currentPage;
                     if ((DateTime.Now - loadedTime).Seconds < 5)
                     {
+                        presStarted = false;
                         pp.changeCount(5 - (DateTime.Now - loadedTime).Seconds);
                         return;
                     }
-                    pp.finishCount();
-                    pp.changeTime((DateTime.Now - loadedTime).Seconds - 5);
+                    if (!presStarted)
+                    {
+                        presStarted = true;
+                        pp.finishCount();
+                    }
+                    pp.changeTime(DateTime.Now - loadedTime - TimeSpan.FromSeconds(5));
+                    pp.tick();
+                    if (pp.gestureLabel.Foreground == Brushes.Red)
+                    {
+                        pp.logGesture((String)pp.gestureDetail.Content);
+                    }
+                    if (pp.motionLabel.Foreground == Brushes.Red)
+                    {
+                        pp.logRange();
+                    }
+                    if (pp.postureLabel.Foreground == Brushes.Red)
+                    {
+                        pp.logPosture();
+                    }
+                    if (pp.volumeLabel.Foreground == Brushes.Red)
+                    {
+                        pp.logVolume();
+                    }
                     switch (currentTrack)
                     {
                         case Gesture.none:
                             resetTrack = false;
                             if (currentPos[right].Y < currentPos[head].Y && currentPos[left].Y < currentPos[head].Y)
                             { //both hands over head
+                                pp.endPanel.Visibility = System.Windows.Visibility.Visible;
                                 currentTrack = Gesture.ending;
                                 lastKeyTime = DateTime.Now;
                                 lastKeyPos[left] = currentPos[left];
@@ -378,16 +499,20 @@ namespace apk
                             break;
 
                         case Gesture.ending:
-                            if (isStill(head) && isStill(right) && isStill(left))
+                            if (currentPos[right].Y < currentPos[head].Y && currentPos[left].Y < currentPos[head].Y)
                             {
                                 resetTrack = false;
+                                pp.endProgress.Value = (DateTime.Now - lastKeyTime).TotalMilliseconds;
                                 if ((DateTime.Now - lastKeyTime).Seconds > 2)
                                 {
-                                    ResultPage result = new ResultPage();
-                                    blank.NavigationService.Navigate(result);
+                                    pp.finish();
                                     cursor.Visibility = System.Windows.Visibility.Visible;
                                     resetTrack = true;
                                 }
+                            }
+                            else
+                            {
+                                pp.endPanel.Visibility = System.Windows.Visibility.Hidden;
                             }
                             break;
                     }
@@ -397,6 +522,11 @@ namespace apk
                 case PageType.gestures:
                     #region gestures
                     TabooGestures tgp = (TabooGestures)currentPage;
+                    if (setTempPos)
+                    {
+                        tempPos = first.Joints;
+                        setTempPos = false;
+                    }
                     switch (currentTrack)
                     {
                         case Gesture.none:
@@ -406,14 +536,6 @@ namespace apk
                                 currentTrack = Gesture.left_push;
                                 lastKeyTime = DateTime.Now;
                                 lastKeyPos[JointType.HandLeft] = currentPos[JointType.HandLeft];
-                            }
-                            if (isStill(head) && isStill(right) && isStill(left))
-                            {
-                                if (tgp.directionsPanel.Visibility == System.Windows.Visibility.Visible)
-                                { //holding still
-                                    currentTrack = Gesture.still;
-                                    lastKeyTime = DateTime.Now;
-                                }
                             }
                             break;
 
@@ -432,18 +554,6 @@ namespace apk
                                         }
                                         resetTrack = true;
                                     }
-                                }
-                            }
-                            break;
-
-                        case Gesture.still:
-                            if (isStill(head) && isStill(right) && isStill(left))
-                            {
-                                resetTrack = false;
-                                if ((DateTime.Now - lastKeyTime).Seconds > 2)
-                                {
-                                    tgp.goNameInput();
-                                    resetTrack = true;
                                 }
                             }
                             break;

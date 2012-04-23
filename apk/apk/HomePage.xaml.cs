@@ -51,8 +51,8 @@ namespace apk
 
         private void reviewClick(object sender, RoutedEventArgs e)
         {
-            //ResultPage rpage = new ResultPage();
-            //this.NavigationService.Navigate(rpage);
+            ReviewPage rpage = new ReviewPage();
+            this.NavigationService.Navigate(rpage);
         }
 
         private void settingsClick(object sender, RoutedEventArgs e)
