@@ -85,7 +85,7 @@ namespace apk
             gestureDetail.Foreground = Brushes.White;
             wordLabel.Foreground = Brushes.Gray;
             wordLabel.Background = Brushes.Gainsboro;
-            wordLabel.Foreground = Brushes.White;
+            wordDetail.Foreground = Brushes.White;
         }
         public void logPosture()
         {
@@ -107,6 +107,7 @@ namespace apk
         }
         public void logGesture(String g)
         {
+            if (g == null) return;
             gestureLabel.Foreground = Brushes.Red;
             gestureLabel.Background = Brushes.Black;
             gestureDetail.Content = g;
@@ -123,6 +124,7 @@ namespace apk
         }
         public void logWord(String w)
         {
+            if (w == null) return;
             wordLabel.Foreground = Brushes.Red;
             wordLabel.Background = Brushes.Black;
             wordDetail.Content = w;
@@ -136,173 +138,6 @@ namespace apk
             else
             {
                 currentResult.words.Add(w, 1);
-            }
-        }
-
-        void onLabels(object sender, KeyEventArgs e) //aka wizard of oz
-        {
-            switch (e.Key)
-            {
-                case Key.P:
-                    postureLabel.Foreground = Brushes.Red;
-                    postureLabel.Background = Brushes.Black;
-                    break;
-                case Key.M:
-                    motionLabel.Foreground = Brushes.Red;
-                    motionLabel.Background = Brushes.Black;
-                    break;
-                case Key.G:
-                    gestureLabel.Foreground = Brushes.Red;
-                    gestureLabel.Background = Brushes.Black;
-                    gestureDetail.Foreground = Brushes.Black;
-                    break;
-                case Key.W:
-                    wordLabel.Foreground = Brushes.Red;
-                    wordLabel.Background = Brushes.Black;
-                    wordDetail.Foreground = Brushes.Black;
-                    break;
-                case Key.V:
-                    volumeLabel.Foreground = Brushes.Red;
-                    volumeLabel.Background = Brushes.Black;
-                    break;
-                case Key.NumPad1:
-                    if (MainWindow.tabooGestures.Count > 0)
-                    {
-                        gestureDetail.Content = MainWindow.tabooGestures.ElementAt(0).Key;
-                        gestureLabel.Foreground = Brushes.Red;
-                        gestureLabel.Background = Brushes.Black;
-                        gestureDetail.Foreground = Brushes.Black;
-                    }
-                    break;
-                case Key.NumPad2:
-                    if (MainWindow.tabooGestures.Count > 1)
-                    {
-                        gestureDetail.Content = MainWindow.tabooGestures.ElementAt(1).Key;
-                        gestureLabel.Foreground = Brushes.Red;
-                        gestureLabel.Background = Brushes.Black;
-                        gestureDetail.Foreground = Brushes.Black;
-                    }
-                    break;
-                case Key.NumPad3:
-                    if (MainWindow.tabooGestures.Count > 2)
-                    {
-                        gestureDetail.Content = MainWindow.tabooGestures.ElementAt(2).Key;
-                        gestureLabel.Foreground = Brushes.Red;
-                        gestureLabel.Background = Brushes.Black;
-                        gestureDetail.Foreground = Brushes.Black;
-                    }
-                    break;
-                case Key.NumPad4:
-                    if (MainWindow.tabooWords.Count > 0)
-                    {
-                        logWord(MainWindow.tabooWords.ElementAt(0));
-                        wordDetail.Content = MainWindow.tabooWords.ElementAt(0);
-                        wordLabel.Foreground = Brushes.Red;
-                        wordLabel.Background = Brushes.Black;
-                        wordDetail.Foreground = Brushes.Black;
-                    }
-                    break;
-                case Key.NumPad5:
-                    if (MainWindow.tabooWords.Count > 1)
-                    {
-                        logWord(MainWindow.tabooWords.ElementAt(1));
-                        wordDetail.Content = MainWindow.tabooWords.ElementAt(1);
-                        wordLabel.Foreground = Brushes.Red;
-                        wordLabel.Background = Brushes.Black;
-                        wordDetail.Foreground = Brushes.Black;
-                    }
-                    break;
-                case Key.NumPad6:
-                    if (MainWindow.tabooWords.Count > 2)
-                    {
-                        logWord(MainWindow.tabooWords.ElementAt(2));
-                        wordDetail.Content = MainWindow.tabooWords.ElementAt(2);
-                        wordLabel.Foreground = Brushes.Red;
-                        wordLabel.Background = Brushes.Black;
-                        wordDetail.Foreground = Brushes.Black;
-                    }
-                    break;
-                case Key.Escape:
-                    finish();
-                    break;
-            }
-        }
-
-
-        void offLabels(object sender, KeyEventArgs e)
-        {
-            switch (e.Key)
-            {
-                case Key.P:
-                    postureLabel.Foreground = Brushes.Gray;
-            postureLabel.Background = Brushes.Gainsboro;
-                    break;
-                case Key.M:
-                    motionLabel.Foreground = Brushes.Gray;
-            motionLabel.Background = Brushes.White;
-                    break;
-                case Key.G:
-                    gestureLabel.Foreground = Brushes.Gray;
-                    gestureDetail.Foreground = Brushes.White;
-            gestureLabel.Background = Brushes.Gainsboro;
-                    break;
-                case Key.W:
-                    wordLabel.Foreground = Brushes.Gray;
-                    wordDetail.Foreground = Brushes.White;
-            wordLabel.Background = Brushes.Gainsboro;
-                    break;
-                case Key.V:
-                    volumeLabel.Foreground = Brushes.Gray;
-            volumeLabel.Background = Brushes.Gainsboro;
-                    break;
-                case Key.NumPad1:
-                    if (MainWindow.tabooGestures.Count > 0)
-                    {
-                        gestureLabel.Foreground = Brushes.Gray;
-                        gestureLabel.Background = Brushes.Gainsboro;
-                        gestureDetail.Foreground = Brushes.White;
-                    }
-                    break;
-                case Key.NumPad2:
-                    if (MainWindow.tabooGestures.Count > 1)
-                    {
-                        gestureLabel.Foreground = Brushes.Gray;
-                        gestureLabel.Background = Brushes.Gainsboro;
-                        gestureDetail.Foreground = Brushes.White;
-                    }
-                    break;
-                case Key.NumPad3:
-                    if (MainWindow.tabooGestures.Count > 2)
-                    {
-                        gestureLabel.Foreground = Brushes.Gray;
-                        gestureLabel.Background = Brushes.Gainsboro;
-                        gestureDetail.Foreground = Brushes.White;
-                    }
-                    break;
-                case Key.NumPad4:
-                    if (MainWindow.tabooWords.Count > 0)
-                    {
-                        wordLabel.Foreground = Brushes.Gray;
-                        wordLabel.Background = Brushes.Gainsboro;
-                        wordDetail.Foreground = Brushes.White;
-                    }
-                    break;
-                case Key.NumPad5:
-                    if (MainWindow.tabooWords.Count > 1)
-                    {
-                        wordLabel.Foreground = Brushes.Gray;
-                        wordLabel.Background = Brushes.Gainsboro;
-                        wordDetail.Foreground = Brushes.White;
-                    }
-                    break;
-                case Key.NumPad6:
-                    if (MainWindow.tabooWords.Count > 2)
-                    {
-                        wordLabel.Foreground = Brushes.Gray;
-                        wordLabel.Background = Brushes.Gainsboro;
-                        wordDetail.Foreground = Brushes.White;
-                    }
-                    break;
             }
         }
     }

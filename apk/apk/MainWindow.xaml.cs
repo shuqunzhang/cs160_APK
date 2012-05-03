@@ -25,14 +25,12 @@ namespace apk
     {
         #region variables
         public static Dictionary <String, Result> results = new Dictionary<String, Result>();
-        public static Dictionary<String, JointCollection> tabooGestures = new Dictionary<String, JointCollection>();
+        public static Dictionary<String, Dictionary<JointType, List<float>>> tabooGestures = new Dictionary<String, Dictionary<JointType, List<float>>>();
         public static List<String> tabooWords = new List<String>();
         public static double volumeLevel;
-        public static double rightRange;
-        public static double leftRange;
-        public static JointCollection tempPos;
-        public static bool setTempPos = false;
-        public static JointCollection currentJoints;
+        public static double rightRange = double.PositiveInfinity;
+        public static double leftRange = double.NegativeInfinity;
+        private static JointCollection currentJoints;
 
         private static List<Button> buttonList;
         public static KinectSensorChooser ksc;
@@ -43,17 +41,27 @@ namespace apk
         const int skeletonCount = 6;
         Skeleton[] allSkeletons = new Skeleton[skeletonCount];
 
+        public static bool setTempPos = false;
+        public static Dictionary<JointType, SkeletonPoint> tempPos = new Dictionary<JointType, SkeletonPoint>() {
+            {JointType.HandRight, new SkeletonPoint()},
+            {JointType.HandLeft, new SkeletonPoint()},
+            {JointType.Head, new SkeletonPoint()},
+        };
+
         private Dictionary<JointType, SkeletonPoint> currentPos = new Dictionary<JointType, SkeletonPoint>() {
             {JointType.HandRight, new SkeletonPoint()},
             {JointType.HandLeft, new SkeletonPoint()},
+            {JointType.Head, new SkeletonPoint()},
         };
         private Dictionary<JointType, SkeletonPoint> lastPos = new Dictionary<JointType, SkeletonPoint>() {
             {JointType.HandRight, new SkeletonPoint()},
             {JointType.HandLeft, new SkeletonPoint()},
+            {JointType.Head, new SkeletonPoint()},
         };
         private Dictionary<JointType, SkeletonPoint> lastKeyPos = new Dictionary<JointType, SkeletonPoint>() {
             {JointType.HandRight, new SkeletonPoint()},
             {JointType.HandLeft, new SkeletonPoint()},
+            {JointType.Head, new SkeletonPoint()},
         };
         public static DateTime loadedTime;
         private bool presStarted;
@@ -74,6 +82,15 @@ namespace apk
         }
 
         #region setup
+        public static void addTabooGesture(String name)
+        {
+            Dictionary<JointType, List<float>> dict = new Dictionary<JointType, List<float>>();
+            dict.Add(JointType.Head, new List<float>(){tempPos[JointType.Head].X,tempPos[JointType.Head].Y,tempPos[JointType.Head].Z});
+            dict.Add(JointType.HandLeft, new List<float>(){tempPos[JointType.HandLeft].X,tempPos[JointType.HandLeft].Y,tempPos[JointType.HandLeft].Z});
+            dict.Add(JointType.HandRight, new List<float>(){tempPos[JointType.HandRight].X,tempPos[JointType.HandRight].Y,tempPos[JointType.HandRight].Z});
+            tabooGestures.Add(name, dict);
+        }
+
         public static void updateButtons(List<Button> bl) 
         {
             Button oldButton;
@@ -160,40 +177,56 @@ namespace apk
         //still a shitton of wizard of oz btw
         bool isBadPosture()
         {
-            PresentationPage pp = (PresentationPage)currentPage;
-            return pp.postureLabel.Foreground == Brushes.Red;
+            if (Keyboard.IsKeyDown(Key.P)) return true;
+            return currentJoints[JointType.ShoulderCenter].Position.Z < currentJoints[JointType.Spine].Position.Z;
         }
         bool isBadRange()
         {
-            return currentPos[JointType.Head].X > rightRange || currentPos[JointType.Head].X < leftRange;
+            if (Keyboard.IsKeyDown(Key.M)) return true;
+            return currentPos[JointType.HandRight].X > rightRange || currentPos[JointType.HandLeft].X < leftRange;
         }
         bool isBadVolume()
         {
-            PresentationPage pp = (PresentationPage)currentPage;
-            return pp.volumeLabel.Foreground == Brushes.Red;
+            return Keyboard.IsKeyDown(Key.V);
         }
-        bool similar(JointCollection current, JointCollection taboo)
+        bool similar(Dictionary<JointType, SkeletonPoint> current, Dictionary<JointType, List<float>> taboo)
         {
-            return false;
+            double LIM = 25;
+            float xDiff = taboo[JointType.Head][0] - current[JointType.Head].X;
+            float yDiff = taboo[JointType.Head][1] - current[JointType.Head].Y;
+            float zDiff = taboo[JointType.Head][2] - current[JointType.Head].Z;
+            bool poop = Math.Abs(current[JointType.Head].X + xDiff - taboo[JointType.Head][0]) < LIM &&
+                Math.Abs(current[JointType.Head].Y + yDiff - taboo[JointType.Head][1]) < LIM &&
+                Math.Abs(current[JointType.Head].Z + zDiff - taboo[JointType.Head][2]) < LIM &&
+                Math.Abs(current[JointType.HandRight].X + xDiff - taboo[JointType.HandRight][0]) < LIM &&
+                Math.Abs(current[JointType.HandRight].Y + yDiff - taboo[JointType.HandRight][1]) < LIM &&
+                Math.Abs(current[JointType.HandRight].Z + zDiff - taboo[JointType.HandRight][2]) < LIM &&
+                Math.Abs(current[JointType.HandLeft].X + xDiff - taboo[JointType.HandLeft][0]) < LIM &&
+                Math.Abs(current[JointType.HandLeft].Y + yDiff - taboo[JointType.HandLeft][1]) < LIM &&
+                Math.Abs(current[JointType.HandLeft].Z + zDiff - taboo[JointType.HandLeft][2]) < LIM;
+            return poop;
         }
         String isBadGesture()
         {
-            PresentationPage pp = (PresentationPage)currentPage;
-            foreach (String g in tabooGestures.Keys)
+            if (Keyboard.IsKeyDown(Key.G)) return "gesture";
+            if (Keyboard.IsKeyDown(Key.NumPad1)) if (MainWindow.tabooGestures.Count > 0) return tabooGestures.ElementAt(0).Key;
+            if (Keyboard.IsKeyDown(Key.NumPad2)) if (MainWindow.tabooGestures.Count > 1) return tabooGestures.ElementAt(1).Key;
+            if (Keyboard.IsKeyDown(Key.NumPad3)) if (MainWindow.tabooGestures.Count > 2) return tabooGestures.ElementAt(2).Key;
+            foreach (KeyValuePair<String, Dictionary<JointType, List<float>>> g in tabooGestures)
             {
-                if (pp.gestureDetail.Foreground == Brushes.Black && g.Equals(pp.gestureDetail.Content))
+                if (similar(currentPos, g.Value))
                 {
-                    return g;
+                    return g.Key;
                 }
-                //if (similar(currentJoints, tabooGestures[g]))
-                //{
-                //    return g;
-                //}
             }
             return null;
         }
         String isBadWord()
         {
+            if (Keyboard.IsKeyDown(Key.W)) return "word";
+            if (Keyboard.IsKeyDown(Key.NumPad4)) if (MainWindow.tabooWords.Count > 0) return tabooGestures.ElementAt(0).Key;
+            if (Keyboard.IsKeyDown(Key.NumPad5)) if (MainWindow.tabooWords.Count > 1) return tabooGestures.ElementAt(1).Key;
+            if (Keyboard.IsKeyDown(Key.NumPad6)) if (MainWindow.tabooWords.Count > 2) return tabooGestures.ElementAt(2).Key;
             return null;
         }
         #endregion presentation helpers
@@ -291,6 +324,7 @@ namespace apk
                 return;
             }
 
+            currentJoints = first.Joints;
 
             //not important, I just didn't want to keep typing JointType.blah over and over
             JointType right = JointType.HandRight;
@@ -427,8 +461,10 @@ namespace apk
                             if (isStill(right))
                             {
                                 resetTrack = false;
+                                sp.rightProgress.Value = (DateTime.Now - lastKeyTime).TotalMilliseconds;
                                 if ((DateTime.Now - lastKeyTime).Seconds > 2)
                                 {
+                                    ScaleAbsolutePosition(cursor, first.Joints[JointType.HandRight]);
                                     sp.saveRightRange(currentPos[right].X);
                                     resetTrack = true;
                                 }
@@ -438,6 +474,7 @@ namespace apk
                             if (isStill(left))
                             {
                                 resetTrack = false;
+                                sp.leftProgress.Value = (DateTime.Now - lastKeyTime).TotalMilliseconds;
                                 if ((DateTime.Now - lastKeyTime).Seconds > 2)
                                 {
                                     sp.saveLeftRange(currentPos[left].X);
@@ -467,22 +504,14 @@ namespace apk
                     }
                     pp.changeTime(DateTime.Now - loadedTime - TimeSpan.FromSeconds(5));
                     pp.tick();
-                    if (pp.gestureLabel.Foreground == Brushes.Red)
-                    {
-                        pp.logGesture((String)pp.gestureDetail.Content);
-                    }
-                    if (pp.motionLabel.Foreground == Brushes.Red)
-                    {
-                        pp.logRange();
-                    }
-                    if (pp.postureLabel.Foreground == Brushes.Red)
-                    {
-                        pp.logPosture();
-                    }
-                    if (pp.volumeLabel.Foreground == Brushes.Red)
-                    {
-                        pp.logVolume();
-                    }
+
+                    pp.clearHilights();
+                    pp.logGesture(isBadGesture());
+                    pp.logWord(isBadWord());
+                    if (isBadPosture()) pp.logPosture();
+                    if (isBadRange()) pp.logRange();
+                    if (isBadVolume()) pp.logVolume();
+
                     switch (currentTrack)
                     {
                         case Gesture.none:
@@ -524,8 +553,12 @@ namespace apk
                     TabooGestures tgp = (TabooGestures)currentPage;
                     if (setTempPos)
                     {
-                        tempPos = first.Joints;
+                        ScaleAbsolutePosition(cursor, first.Joints[right]);
+                        tempPos[JointType.Head] = currentPos[JointType.Head];
+                        tempPos[JointType.HandRight] = currentPos[JointType.HandRight];
+                        tempPos[JointType.HandLeft] = currentPos[JointType.HandLeft];
                         setTempPos = false;
+                        ScalePosition(cursor, first.Joints[JointType.HandRight]);
                     }
                     switch (currentTrack)
                     {

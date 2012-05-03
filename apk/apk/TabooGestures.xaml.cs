@@ -107,6 +107,7 @@ namespace apk
         {
             directionsPanel.Visibility = System.Windows.Visibility.Visible;
             panelBorder.Visibility = System.Windows.Visibility.Visible;
+            MainWindow.setTempPos = true;
             cGestures.Focus();
         }
 
@@ -131,7 +132,7 @@ namespace apk
                 nameInputLabel.Content = "Invalid Gesture Name, try again.";
                 return;
             }
-            MainWindow.tabooGestures.Add(nameInput.Text, MainWindow.tempPos);
+            MainWindow.addTabooGesture(nameInput.Text);
             gestureListBox.Items.Add(nameInput.Text);
             nameInput.Text = ""; //clears the text box
             nameInputLabel.Content = "Say a name for this gesture.";

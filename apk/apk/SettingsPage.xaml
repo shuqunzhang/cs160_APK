@@ -46,20 +46,22 @@
         <Button Canvas.Left="568" Canvas.Top="533" Content="Set Volume" FontSize="42" Height="150" Name="volumeButton" Width="500" Click="volumeClick"/>
         <TextBlock Canvas.Left="24" Canvas.Top="12" Height="84" Name="textBlock1" Text="Settings" FontSize="64"/>
         <Label Canvas.Left="352" Canvas.Top="196" Content="Setting Saved!" Height="250" Name="savedLabel" FontSize="56" Width="400" Background="Gray" Visibility="Hidden" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="White" />
+        <StackPanel Background="white" Canvas.Left="152" Canvas.Top="470" Height="215" Name="volumePanel" Width="800" Visibility="Hidden">
+            <Label Background="#FF111111" Content="Set Desired Volume Level:" FontSize="36" Foreground="White" Height="64" Name="label7" />
+            <Label Content="Count to five outloud in the desired volume level" FontSize="36" Height="64" Name="label8" Padding="10" />
+         </StackPanel>
         <StackPanel Canvas.Left="152" Canvas.Top="470" Height="215" Name="rightRangePanel" Width="800" Background="white" Visibility="Hidden">
             <Label Content="Set Range of Motion:" Height="64" Name="label1" FontSize="36" Background="#FF111111" Foreground="White" />
             <Label Content="Hold your RIGHT hand at your RIGHT boundary" Height="64" Name="label2" FontSize="36" Padding="10" />
             <Label Content="for 3 seconds." FontSize="36" Height="64" Name="label3" Padding="10" />
+            <ProgressBar Height="25" Name="rightProgress" Width="175" Maximum="3000" />
         </StackPanel>
         <StackPanel Background="white" Canvas.Left="152" Canvas.Top="470" Height="215" Name="leftRangePanel" Width="800" Visibility="Hidden">
             <Label Background="#FF111111" Content="Set Range of Motion:" FontSize="36" Foreground="White" Height="64" Name="label4" />
             <Label Content="Hold your LEFT hand at your LEFT boundary" FontSize="36" Height="64" Name="label5" Padding="10" />
             <Label Content="for 3 seconds." FontSize="36" Height="64" Name="label6" Padding="10" />
+            <ProgressBar Height="25" Name="leftProgress" Width="175" Maximum="3000" />
         </StackPanel>
-        <StackPanel Background="white" Canvas.Left="152" Canvas.Top="470" Height="215" Name="volumePanel" Width="800" Visibility="Hidden">
-            <Label Background="#FF111111" Content="Set Desired Volume Level:" FontSize="36" Foreground="White" Height="64" Name="label7" />
-            <Label Content="Count to five outloud in the desired volume level" FontSize="36" Height="64" Name="label8" Padding="10" />
-         </StackPanel>
         <Rectangle Height="215" Name="panelBorder" Stroke="Black" Width="800" Canvas.Left="152" Canvas.Top="470" StrokeThickness="3" Visibility="Hidden"/>
     </Canvas>
 </Page>

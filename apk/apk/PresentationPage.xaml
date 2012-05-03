@@ -4,7 +4,7 @@
         Height="700" Width="1080" Title="PresentationPage"
         xmlns:my="clr-namespace:Microsoft.Samples.Kinect.WpfViewers;assembly=Microsoft.Samples.Kinect.WpfViewers" Loaded="Page_Loaded">
 
-    <Canvas Name="cPresentation" KeyDown="onLabels" KeyUp="offLabels" Focusable="True">
+    <Canvas Name="cPresentation" Focusable="True">
         <my:KinectColorViewer Canvas.Left="0" Canvas.Top="0" Width="900" Height="675" Name="kinectColorViewer1" Kinect="{Binding ElementName=kinectSensorChooser1, Path=Kinect}" />
         <my:KinectSensorChooser Canvas.Left="0" Canvas.Top="1000" Name="kinectSensorChooser1" Width="328" />
         <Label Canvas.Left="0" Canvas.Top="652" Content="Hold hands above head for 3 seconds to end the presentation." Height="48" Name="endLabel" Width="1080" FontSize="24" HorizontalContentAlignment="Center" Background="#FF030303" Foreground="White" Panel.ZIndex="1" />
@@ -15,7 +15,7 @@
         <StackPanel Canvas.Left="900" Canvas.Top="0" Height="675" Name="infoPanel" Width="180">
             <Label Content="0:00" Height="122" Name="timeLabel" FontSize="64" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
             <Label Content="Posture" FontSize="48" Height="75" HorizontalContentAlignment="Center" Name="postureLabel" Background="Gainsboro"  Foreground="Gray" />
-            <Label Content="Motion" FontSize="48" Height="75" HorizontalContentAlignment="Center" Name="motionLabel" Foreground="Gray"/>
+            <Label Content="Range" FontSize="48" Height="75" HorizontalContentAlignment="Center" Name="motionLabel" Foreground="Gray"/>
             <Label Content="Gesture" FontSize="48" Height="75" HorizontalContentAlignment="Center" Name="gestureLabel" Background="Gainsboro" Foreground="Gray"/>
             <Label Content="Gesture" FontSize="24" Height="48" HorizontalContentAlignment="Center" Name="gestureDetail" Foreground="White"/>
             <Label Content="Word" FontSize="48" Height="75" HorizontalContentAlignment="Center" Name="wordLabel" Background="Gainsboro" Foreground="Gray"/>
